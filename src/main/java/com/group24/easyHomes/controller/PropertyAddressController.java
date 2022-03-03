@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PropertyAddressController {
     @Autowired
+    //autowire
     private PropertyAddressRepository addressRepository;
 
     @Autowired
