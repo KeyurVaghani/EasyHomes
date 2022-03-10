@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import antlr.collections.List;
+import com.group24.easyHomes.model.Property_review;
+import com.group24.easyHomes.repository.Property_reviewRepository;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/")
@@ -19,6 +22,6 @@ public class Property_reviewController {
     
     @GetMapping("Property_review")
     public List<Property_review> getProperty_review(){
-
+        return this.property_reviewRepository.findAll();
     }
 }
