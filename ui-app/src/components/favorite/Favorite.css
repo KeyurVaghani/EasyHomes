@@ -1,0 +1,121 @@
+.favorite-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.left {
+    text-align: center;
+    width: 20%;
+    display: inline-block;
+    vertical-align: top;
+    float: left;
+    margin-top: 30px;
+    margin-right: 30px;
+}
+
+.right {
+    width: 70%;
+    display: inline-block;
+    vertical-align: top;
+    float: left;
+    margin-left: 30px;
+    right: 30px;
+    margin-top: 30px;
+}
+
+.body {
+    margin-bottom: 200px;
+}
+
+.profile {
+    text-align: center;
+    font-size: 25px;
+}
+
+
+
+.profile-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: Transparent;
+    border-style: none;
+    outline: none;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.profile-menu:hover {
+    border-style: solid;
+}
+
+.property-img{
+    border-radius: 5%;
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    margin-left: 30px;
+
+}
+
+.profile-img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.search-content {
+    font-size: 20px;
+}
+
+.search-btn {
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.favorites h1 {
+    margin-top: 80px;
+    font-size: 30px;
+}
+
+.favorite-content h3 {
+    font-size: 20px;
+}
+
+.favorite-content {
+    font-size: 20px;
+    margin-bottom: 70px;
+    border: 1px solid dimgray;
+    border-radius: 6px;
+    padding: 10px 10px 30px;
+}
+
+.favorite-btn {
+    display: inline-block;
+    font-size: 20px;
+    background: #6495ED;
+    color: #fff;
+    margin: 10px 2px;
+    width: 100px;
+    border-radius: 6px;
+    padding: 10px 0;
+    border: none;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.favorite-buttons {
+    margin-left: 80%
+}
+
+.favorite-btn:hover {
+    background-color: #4169E1;
+}
+
+
