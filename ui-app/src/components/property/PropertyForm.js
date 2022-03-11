@@ -85,17 +85,17 @@ import axios from 'axios';
       };
 
       const submitPropertyPost = () => {
-      //  alert("Property Saved");
-      //  const property ={
-      //    propertyName : {propertyName}
-      //  };
-      //  axios.post("http://localhost:8080/properties/", property).then(response =>{
-      //   alert("backen hit successul");
-      //    if(response.data != null)
-      //    {
-      //      alert("backen hit successul");
-      //    }
-      //  });
+       alert("Property Saved");
+       const property ={
+         propertyName : {propertyName}
+       };
+       axios.post("http://localhost:8080/properties/", property).then(response =>{
+        alert("backen hit successul");
+         if(response.data != null)
+         {
+           alert("backen hit successul");
+         }
+       });
 
       };
       
