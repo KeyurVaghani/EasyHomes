@@ -3,43 +3,47 @@ package com.group24.easyHomes.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "FavoriteService")
+@Table(name = "favorite_service")
 public class FavoriteService {
-    private Long userId;
-    private int serviceId;
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long favorite_service_id;
 
-    public FavoriteService(Long userId, int serviceId) {
-        this.userId = userId;
-        this.serviceId = serviceId;
+    @Column(name="user_id")
+    private Long user_id;
+    @Column(name="service_id")
+    private int service_id;
+
+
+    public FavoriteService(Long user_id, int service_id) {
+        this.user_id = user_id;
+        this.service_id = service_id;
     }
 
     public FavoriteService() {
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public int getService_id() {
+        return service_id;
     }
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setService_id(int service_id) {
+        this.service_id = service_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Long getFavorite_service_id() {
+        return favorite_service_id;
     }
 
-    public Integer getId() {
-        return id;
+    public void setFavorite_service_id(Long favorite_service_id) {
+        this.favorite_service_id = favorite_service_id;
     }
 }
