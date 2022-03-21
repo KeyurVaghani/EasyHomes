@@ -20,7 +20,7 @@ public class FavoriteServiceController {
         return favoriteServiceRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity newFavoriteService(@RequestBody FavoriteService favoriteService) {
         FavoriteService addedFavoriteService = new FavoriteService();
         addedFavoriteService.setUser_id(favoriteService.getUser_id());
