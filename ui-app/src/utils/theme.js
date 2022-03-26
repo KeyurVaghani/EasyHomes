@@ -8,6 +8,6 @@ export const customTheme = createTheme({
     },
     secondary: {
       main: CUSTOM_THEME_HEX_SECONDARY,
-    },
+    }
   },
 });
