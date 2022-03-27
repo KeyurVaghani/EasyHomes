@@ -11,41 +11,41 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Drawer() {
-const [state, setState] = React.useState({
-    drawerOpened: false
-});
-const anchor = 'left';
+    const [state, setState] = React.useState({
+        drawerOpened: false
+    });
+    const anchor = 'left';
 
-const toggleDrawer = (open) => (event) => {
-    if (
-        event &&
-        event.type === 'keydown' &&
-        (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-        return;
-    }
+    const toggleDrawer = (open) => (event) => {
+        if (
+            event &&
+            event.type === 'keydown' &&
+            (event.key === 'Tab' || event.key === 'Shift')
+        ) {
+            return;
+        }
 
-    setState({ ...state, drawerOpened: open });
-};
+        setState({ ...state, drawerOpened: open });
+    };
 
-const list = () => (
-    <Box
-        sx={{ width: 250 }}
-        role="presentation"
-        onClick={toggleDrawer(false)}
-        onKeyDown={toggleDrawer(false)}
-    >
-        <List>
-            {['Favourites'].map((text, index) => (
-                <ListItem button key={text}>
-                    <ListItemIcon>
-                        <StarOutlineIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                </ListItem>
-            ))}
-        </List>
-        <Divider />
+    const list = () => (
+        <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+        >
+            <List>
+                {['Favourites'].map((text, index) => (
+                    <ListItem button key={text}>
+                        <ListItemIcon>
+                            <StarOutlineIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
             <List>
                 {['Logout'].map((text, index) => (
                 <ListItem button key={text}>

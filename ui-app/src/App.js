@@ -43,7 +43,7 @@ function App() {
       </Route>
         <Route path="register" element={<PublicRegisterOutlet />}>
               <Route path="" element={<PublicRegister />} />
-       </Route>
+      </Route>
       <Route path="" element={<Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
