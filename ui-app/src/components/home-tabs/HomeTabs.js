@@ -47,19 +47,21 @@ const RenderProperty = ({ property },index) => {
   const [favPId, setFavPId] = useState(0);
 
   const InitFavState=()=>{
-    axios.get("http://localhost:8080/favorite-property/"+localStorage.getItem("userId"))
-        .then((response)=>{
-          // console.log(response.data);
-          let favPArr = response.data;
-          favPArr.map((item)=>{
-            if(item.property_id === property.property_id){
-                // console.log("initColor"+btnColor);
-              setBtnColor("red");
-              setFavPId(item.favorite_property_id);
-              setFavP(true);
-            }
-          })
-        })
+      useEffect(()=> {
+          axios.get("http://localhost:8080/favorite-property/" + localStorage.getItem("userId"))
+              .then((response) => {
+                  // console.log(response.data);
+                  let favPArr = response.data;
+                  favPArr.map((item) => {
+                      if (item.property_id === property.property_id) {
+                          // console.log("initColor"+btnColor);
+                          setBtnColor("red");
+                          setFavPId(item.favorite_property_id);
+                          setFavP(true);
+                      }
+                  })
+              })
+      },[])
   }
 
   const ToggleFavP=(favPId)=>{
@@ -161,19 +163,21 @@ const RenderService = ({ service },index) => {
     const [favSId, setFavSId] = useState(0);
 
     const InitFavState=()=>{
-        axios.get("http://localhost:8080/favorite-service/"+localStorage.getItem("userId"))
-            .then((response)=>{
-                // console.log(response.data);
-                let favSArr = response.data;
-                favSArr.map((item)=>{
-                    if(item.service_id === service.service_id){
-                        // console.log("initColor"+btnColor);
-                        setBtnColor("red");
-                        setFavSId(item.favorite_service_id);
-                        setFavS(true);
-                    }
+        useEffect(()=>{
+            axios.get("http://localhost:8080/favorite-service/"+localStorage.getItem("userId"))
+                .then((response)=>{
+                    // console.log(response.data);
+                    let favSArr = response.data;
+                    favSArr.map((item)=>{
+                        if(item.service_id === service.service_id){
+                            // console.log("initColor"+btnColor);
+                            setBtnColor("red");
+                            setFavSId(item.favorite_service_id);
+                            setFavS(true);
+                        }
+                    })
                 })
-            })
+        },[])
     }
 
     const ToggleFavS=(favSId)=>{
