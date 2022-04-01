@@ -40,6 +40,60 @@ const RenderProperty = ({ property },index) => {
   const dispatch = useDispatch();
   const blobData= property.images[0]?.image_data ;
 
+  // console.log(localStorage.getItem("userId"));
+  // console.log(property.property_id);
+  const [favP, setFavP]=useState(false);
+  const [btnColor, setBtnColor] = useState("grey");
+  const [favPId, setFavPId] = useState(0);
+
+  const InitFavState=()=>{
+    axios.get("http://localhost:8080/favorite-property/"+localStorage.getItem("userId"))
+        .then((response)=>{
+          // console.log(response.data);
+          let favPArr = response.data;
+          favPArr.map((item)=>{
+            if(item.property_id === property.property_id){
+                // console.log("initColor"+btnColor);
+              setBtnColor("red");
+              setFavPId(item.favorite_property_id);
+              setFavP(true);
+            }
+          })
+        })
+  }
+
+  const ToggleFavP=(favPId)=>{
+    setFavP((favP) => {
+      if (favP === true && favPId!==0) {
+        axios.delete("http://localhost:8080/favorite-property/delete/"+favPId)
+            .then((response) => {
+              // console.log(response.data);
+              setBtnColor("grey");
+              setFavP(false);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      }
+      if (favP === false) {
+        axios.post("http://localhost:8080/favorite-property/add", {
+          user_id: localStorage.getItem("userId"),
+          property_id: property.property_id
+        })
+            .then((response) => {
+              // console.log(response.data);
+              setBtnColor("red");
+              setFavP(true);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+      }
+    });
+  }
+
+  InitFavState();
+
   return (
       <>
         <Property />
@@ -59,8 +113,13 @@ const RenderProperty = ({ property },index) => {
       image={`data:image/jpeg;base64,${blobData}`}
     />
           <CardActions disableSpacing style={{justifyContent:'space-between'}}>
-          <IconButton aria-label="add to favorites">
-        <AddFavorite />
+          <IconButton aria-label="add to favorites"
+                      style={{ color: btnColor}}
+                      onClick={()=>{
+                          ToggleFavP(favPId);
+                          // console.log("clicked"+btnColor);
+                      }}>
+        <AddFavorite/>
       </IconButton>
               <Rating
                   name="simple-controlled"
@@ -96,6 +155,59 @@ const RenderProperty = ({ property },index) => {
 const RenderService = ({ service },index) => {
   const dispatch = useDispatch();
   const blobData= service.images[0]?.image_data ;
+
+    const [favS, setFavS]=useState(false);
+    const [btnColor, setBtnColor] = useState("grey");
+    const [favSId, setFavSId] = useState(0);
+
+    const InitFavState=()=>{
+        axios.get("http://localhost:8080/favorite-service/"+localStorage.getItem("userId"))
+            .then((response)=>{
+                // console.log(response.data);
+                let favSArr = response.data;
+                favSArr.map((item)=>{
+                    if(item.service_id === service.service_id){
+                        // console.log("initColor"+btnColor);
+                        setBtnColor("red");
+                        setFavSId(item.favorite_service_id);
+                        setFavS(true);
+                    }
+                })
+            })
+    }
+
+    const ToggleFavS=(favSId)=>{
+        setFavS((favS) => {
+            if (favS === true && favSId!==0) {
+                axios.delete("http://localhost:8080/favorite-service/delete/"+favSId)
+                    .then((response) => {
+                        // console.log(response.data);
+                        setBtnColor("grey");
+                        setFavS(false);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+            if (favS === false) {
+                axios.post("http://localhost:8080/favorite-service/add", {
+                    user_id: localStorage.getItem("userId"),
+                    service_id: service.service_id
+                })
+                    .then((response) => {
+                        console.log(response.data);
+                        setBtnColor("red");
+                        setFavS(true);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        });
+    }
+
+    InitFavState();
+
   return (
     <>
     <Service />
@@ -116,7 +228,11 @@ const RenderService = ({ service },index) => {
           image={`data:image/jpeg;base64,${blobData}`}
         />
         <CardActions disableSpacing style={{justifyContent:'space-between'}}>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites"
+                    style={{ color: btnColor}}
+                    onClick={()=>{
+                        ToggleFavS(favSId);
+                    }}>
           <AddFavorite />
           </IconButton>
           <Rating

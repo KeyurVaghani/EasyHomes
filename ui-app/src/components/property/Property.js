@@ -15,7 +15,7 @@ const Property = () => {
   const isOpen = useSelector(state => state.app.homeDialogProperty.isOpen)
   const property = useSelector(state => state.app.homeDialogProperty.property)
 
-    console.log(property)
+    // console.log(property)
 
   return (
       <Dialog fullWidth maxWidth='md' open={isOpen} onClose={()=>dispatch(openModelProperty({ homeDialogProperty:
