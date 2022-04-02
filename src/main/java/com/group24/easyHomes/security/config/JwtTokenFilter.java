@@ -20,24 +20,24 @@ import io.jsonwebtoken.Claims;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private static Logger log = LoggerFactory.getLogger(JwtTokenFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(JwtTokenFilter.class);
 
-    private JwtTokenProvider tokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    public void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain)
             throws ServletException, IOException {
         log.info("JwtTokenFilter : doFilterInternal");
-        String token = request.getHeader("Authorization");
-        if (token != null) {
+        String jwtToken = httpServletRequest.getHeader("Authorization");
+        if (jwtToken != null) {
             try {
-                Claims claims = tokenProvider.getClaimsFromToken(token);
+                Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
                 if (!claims.getExpiration().before(new Date())) {
-                    Authentication authentication = tokenProvider.getAuthentication(claims.getSubject());
+                    Authentication authentication = jwtTokenProvider.getAuthentication(claims.getSubject());
                     if (authentication.isAuthenticated()) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
@@ -45,19 +45,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             } catch (RuntimeException e) {
                 try {
                     SecurityContextHolder.clearContext();
-                    response.setContentType("application/json");
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getWriter().println(
-                            new JSONObject().put("exception", "expired or invalid JWT token " + e.getMessage()));
+                    httpServletResponse.setContentType("application/json");
+                    httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    httpServletResponse.getWriter().println(
+                            new JSONObject().put("exception", "Invalid token: " + e.getMessage()));
                 } catch (IOException | JSONException e1) {
                     e1.printStackTrace();
                 }
                 return;
             }
         } else {
-            log.info("first time so creating token using UserResourceImpl - authenticate method");
+            log.info("");
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
 }

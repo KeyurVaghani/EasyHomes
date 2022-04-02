@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -43,11 +41,28 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [isValid, setIsValid] = useState(false);
+  const [message, setMessage] = useState("");
+
+
   const [initialState, setInitialState] = useState({
     email: "",
     password: "",
     error: "",
   });
+
+  const emailRegex = /\S+@\S+\.\S+/;
+
+  const validateEmail = (event) => {
+    const email = event.target.value;
+    if (emailRegex.test(email)) {
+      setIsValid(true);
+      setMessage("Your email looks good!");
+    } else {
+      setIsValid(false);
+      setMessage("Please enter a valid email!");
+    }
+  };
 
   const isUserLoggedIn = useSelector((state) => state.app.isUserLoggedIn);
   if (isUserLoggedIn) {
@@ -66,6 +81,7 @@ const Login = (props) => {
       event.preventDefault();
     }
     dispatch(authenticateUserData({ email, password }));
+    
   };
 
   const { email, password, error } = initialState;
@@ -103,8 +119,12 @@ const Login = (props) => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={validateEmail}
               autoFocus
             />
+            <div className={`message ${isValid ? "success" : "error"}`}>
+                  {message}
+                </div>
             <TextField
               margin="normal"
               required
@@ -115,33 +135,33 @@ const Login = (props) => {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={validateUser}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 4, mb: 3 }}
               disabled={
                 initialState.email.length === 0 ||
-                initialState.password.length === 0
+                initialState.password.length === 0 ||
+                !isValid
               }
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                {/* <Link href="#" variant="body2">
-                          Forgot password?
-                        </Link> */}
+                {
+                  <Link href="forgotpassword" variant="body2">
+                    Forgot password?
+                  </Link>
+                }
               </Grid>
               <Grid item>
-                 <Link href="register" variant="body2">
-                          {"Don't have an account? Sign Up"}
-                 </Link>
+                <Link href="register" variant="body2">
+                  {"Sign Up"}
+                </Link>
               </Grid>
             </Grid>
           </Box>

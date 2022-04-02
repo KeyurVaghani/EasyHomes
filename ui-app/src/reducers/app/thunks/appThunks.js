@@ -15,6 +15,11 @@ export const authenticateUserData = createAsyncThunk(
           "Content-Type": "application/json",
         }
       })
+      .catch(function (error) {
+        if (error.response) {
+          alert("Invalid email/password");
+        }
+      });
 
     return response.data;
   }

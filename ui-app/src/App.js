@@ -7,6 +7,7 @@ import HomeTabs from "./components/home-tabs/HomeTabs";
 import FabMenu from "./components/fab-menu/FabMenu";
 import Login from "./User/Login";
 import Register from "./User/Register";
+import Forgotpassword from "./User/Forgotpassword";
 
 const isLogin = () => {
   return !!localStorage.getItem("token");
@@ -14,6 +15,7 @@ const isLogin = () => {
 
 const Public = () => <Login />;
 const PublicRegister = () => <Register />;
+const PublicForgotPassword = () => <Forgotpassword />;
 const Private = () => <Dashboard />;
 
 function PrivateOutlet() {
@@ -32,6 +34,11 @@ function PublicRegisterOutlet() {
 }
 
 
+function PublicForgotPasswordOutlet() {
+  const auth = isLogin();
+  return !auth ? <Outlet /> : <Navigate to="/forgotpassword" />;
+}
+
 function App() {
   return (
     <Routes>
@@ -44,6 +51,9 @@ function App() {
         <Route path="register" element={<PublicRegisterOutlet />}>
               <Route path="" element={<PublicRegister />} />
        </Route>
+         <Route path="forgotpassword" element={<PublicForgotPasswordOutlet />}>
+               <Route path="" element={<PublicForgotPassword />} />
+             </Route>
       <Route path="" element={<Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>

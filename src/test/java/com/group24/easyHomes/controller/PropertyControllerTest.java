@@ -59,8 +59,6 @@ public class PropertyControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
     }
 
-
-
     @MockBean
     private PropertyService service;
 
