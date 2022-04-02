@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins="*")
 @AllArgsConstructor
 public class AppUserResourceImpl {
 
@@ -78,6 +78,9 @@ public class AppUserResourceImpl {
                 return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
             }
 
+// ----------------------------------------------------
+            String link = "https://easthomes-develop.herokuapp.com/user/confirm?token=" + token;
+// ----------------------------------------------------
         } catch (JSONException e) {
             try {
                 jsonObject.put("exception", e.getMessage());

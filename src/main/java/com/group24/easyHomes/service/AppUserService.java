@@ -40,7 +40,12 @@ public class AppUserService implements UserDetailsService {
         if(userExists){
             String token = UUID.randomUUID().toString();
 
+<<<<<<< HEAD
             TokenValidation tokenValidation = new TokenValidation(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60*24),appUser);
+=======
+        TokenValidation tokenValidation = new TokenValidation(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60*24),appUser);
+        
+>>>>>>> ab3d279d24193db630ab4252e896e19598a672ab
 
             tokenValidationService.storeToken(tokenValidation);
 
@@ -54,4 +59,13 @@ public class AppUserService implements UserDetailsService {
     public int enableAppUser(String email) {
         return appUserRepository.enableAppUser(email);
     }
+<<<<<<< HEAD
+=======
+
+    public AppUser getById(long id){
+        return appUserRepository.findById(id).get();
+    }
+
+
+>>>>>>> ab3d279d24193db630ab4252e896e19598a672ab
 }
