@@ -2,9 +2,7 @@ package com.group24.easyHomes.controller;
 
 import com.group24.easyHomes.dto.ServiceDTO;
 import com.group24.easyHomes.mappers.ServiceToServiceDTO;
-import com.group24.easyHomes.model.AppUser;
-import com.group24.easyHomes.model.ServiceImages;
-import com.group24.easyHomes.model.Services;
+import com.group24.easyHomes.model.*;
 import com.group24.easyHomes.repository.AppUserRepository;
 import com.group24.easyHomes.service.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,10 +73,15 @@ public class  ServiceController {
 
 
     @PutMapping(value = "/services/{serviceId}/update",consumes = {"application/json"},produces ={"application/json"})
-    public ResponseEntity<Services>  updateProperty(@PathVariable Long serviceId, @RequestBody Services services)
+    public ResponseEntity<Services>  updateService(@PathVariable Long serviceId, @RequestBody Services services)
     {
         return new ResponseEntity<>(service.updateService(serviceId,services),HttpStatus.NO_CONTENT);
 
     }
 
+    @PostMapping(value = "/services/filter",consumes = {"application/json"},produces ={"application/json"})
+    public ResponseEntity<List<Services>> filterServices(@RequestBody ServicesListQuery servicesListQuery)
+    {
+        return new ResponseEntity<>(service.filterServices(servicesListQuery),HttpStatus.OK);
+    }
 }

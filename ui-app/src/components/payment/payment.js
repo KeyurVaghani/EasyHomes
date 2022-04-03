@@ -3,18 +3,15 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { POST_PAYMENT } from "../../constants/Api";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
- 
 export default function Payment(props) {
-     const{ service } = props;
+     const{ service, setToastMessage } = props;
     const [billingDetails, setBillingDetails] = React.useState("");
     const [succeeded, setSucceeded] = React.useState(false);
     const [paypalErrorMessage, setPaypalErrorMessage] = React.useState("");
     const [orderID, setOrderID] = React.useState(false);
+  
 
     const handleSnackClose = (event, reason) => {
       if (reason === 'clickaway') {
@@ -50,9 +47,7 @@ export default function Payment(props) {
         return actions.order.capture().then(function (details) {
           const {payer} = details;
           setBillingDetails(payer);
-          setSucceeded(true);
-
-          //alert("Payment Sucessful");
+          setToastMessage(true)
           const paymentDetails ={
             "user_id":localStorage.getItem("userId"),
             "amount":service?.cost,
@@ -61,7 +56,7 @@ export default function Payment(props) {
           JSON.stringify(paymentDetails)
           axios({
             method: 'post',
-            url: 'http://localhost:8080/payment/addPayment',
+            url: POST_PAYMENT,
             data: JSON.stringify(paymentDetails),
             headers: {
               'Content-Type': 'application/json'
@@ -73,14 +68,6 @@ export default function Payment(props) {
                 //handle error
                 console.log(response);
             });
-
-            <Snackbar open={succeeded} autoHideDuration={6000} onClose={handleSnackClose}>
-            <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
-              Payment Sucessful!
-            </Alert>
-          </Snackbar>
-    
-
         })
       };
     // handles payment errors
