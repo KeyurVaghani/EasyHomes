@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/serviceReview")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ServiceReviewController {
 
     @Autowired
@@ -21,16 +23,16 @@ public class ServiceReviewController {
     private SReviewDTOtoSReview sReviewDTOtoSReview;
 
 
-
-
-
-    @PostMapping(value = "/services/reviews", consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(value = "/add", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<ServiceReview> saveReview(@RequestBody ServiceReviewDTO serviceReviewDTO){
         return new ResponseEntity<>(serviceReviewServices.saveOrUpdateReview(serviceReviewDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/services/{serviceID}/reviews/{reviewID}")
-    public void saveReview(@PathVariable Long serviceID, @PathVariable Long reviewID){
-        serviceReviewServices.deletebyId(serviceID, reviewID);
+    @DeleteMapping(value = "/{serviceID}/{reviewID}")
+    public  ResponseEntity<HttpStatus>  saveReview(@PathVariable Long serviceID, @PathVariable Long reviewID){
+        if(serviceReviewServices.deletebyId(serviceID, reviewID)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }
