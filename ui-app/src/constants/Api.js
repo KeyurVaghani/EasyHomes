@@ -17,3 +17,6 @@ export const POST_PAYMENT = URL + '/payment/addPayment';
 export const AUTH_USER = URL + '/user/authenticate';
 export const REGISTER_USER = URL + "/user/register";
 export const REST_USER = URL + "/rest/user/register";
+
+export const FAVORITE_PROPERTY = URL + '/favorite-property/';
+export const FAVORITE_SERVICE = URL + '/favorite-service/';

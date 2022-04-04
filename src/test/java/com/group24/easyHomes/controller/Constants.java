@@ -12,8 +12,9 @@ public class Constants {
     public static final int userId = 1;
     public static final int paidForServiceID = 1;
     public static final Long serviceID = 1L;
-    public static final Long favoritePropertyID = 1L;
-    public static final int markedAsFavoriteByUserID = 1;
+    public static final int favoritePropertyID = 1;
+    public static final Long favoritePropertyPrimaryID = 1L;
+    public static final Long markedAsFavoriteByUserID = 1L;
     public static final long reviewForServiceID = 16L;
     public static final long reviewGivenByUserID = 1L;
     public static final int reviewRating = 4;
