@@ -81,7 +81,7 @@ public class AppUserResourceImplUnitTest {
         doReturn(role).when(roleRepository).findByName(any());
         doReturn(user).when(userRepository).saveAndFlush(any(AppUser.class));
         doReturn("$2a$10$5FpROrnL6AAk3.zlHpOXG.5Z").when(service).signUpUser(any());
-        doNothing().when(sendMailService).send(any(),any());
+        doNothing().when(sendMailService).send(any(),any(), any());
 
         MockHttpServletRequestBuilder request = post("/user/register");
         request= request.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user));

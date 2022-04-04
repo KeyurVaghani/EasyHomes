@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class SendMailService implements SendMail{
+public class SendMailService{
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SendMailService.class);
 
@@ -29,9 +29,8 @@ public class SendMailService implements SendMail{
     @Autowired
     private final Environment env;
 
-    @Override
     @Async
-    public void send(String emailID, String content) {
+    public void send(String emailID, String content, String subject) {
         try{
             JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
             mailSender.setHost(this.emailConfig.getHost());
@@ -43,7 +42,8 @@ public class SendMailService implements SendMail{
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
             mimeMessageHelper.setText(content, true);
             mimeMessageHelper.setTo(emailID);
-            mimeMessageHelper.setSubject(Objects.requireNonNull(env.getProperty("email.subject")));
+//            mimeMessageHelper.setSubject(Objects.requireNonNull(env.getProperty("email.subject")));
+            mimeMessageHelper.setSubject(subject);
             javaMailSender.send(mimeMessage);
         }catch (MessagingException e){
             LOGGER.error(env.getProperty("send.error"),e);

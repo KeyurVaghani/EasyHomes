@@ -20,13 +20,8 @@ import Collapse from '@mui/material/Collapse';
 import Slide from '@mui/material/Slide';
 import './App.css';
 import { updateUserLoggedInStatus } from './reducers/app/appSlice';
-import NavBar from './components/nav-bar/Navbar';
-import HomeTabs from './components/home-tabs/HomeTabs';
-import FabMenu from './components/fab-menu/FabMenu';
 
 import Welcome from './components/nav-bar/Welcome';
-import Login from './User/Login';
-import Register from './User/Register';
 import Drawer from './components/nav-bar/drawer/Drawer';
 import FilterMenu from './components/filter-menu/FilterMenu';
 // const NavBar = lazy(() => import('./components/nav-bar/Navbar'));
@@ -86,18 +81,13 @@ function App() {
       <Route path="login" element={<PublicOutlet />}>
         <Route path="" element={<Public />} />
       </Route>
-<<<<<<< HEAD
         <Route path="register" element={<PublicRegisterOutlet />}>
               <Route path="" element={<PublicRegister />} />
        </Route>
          <Route path="forgotpassword" element={<PublicForgotPasswordOutlet />}>
                <Route path="" element={<PublicForgotPassword />} />
              </Route>
-=======
-      <Route path="register" element={<PublicRegisterOutlet />}>
-        <Route path="" element={<PublicRegister />} />
-      </Route>
->>>>>>> ab3d279d24193db630ab4252e896e19598a672ab
+
       <Route path="" element={<Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>

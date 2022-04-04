@@ -12,7 +12,12 @@ public class AppUserResourceDTO {
     @Value("${email.verification.message}")
     public String message;
 
+    @Value("${email.verification.subject}")
+    public String subject;
+
     @Value("${login.error}")
     public String loginErrorMessage;
+
+
 
 }

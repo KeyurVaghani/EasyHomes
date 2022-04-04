@@ -3,7 +3,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { POST_PAYMENT } from "../../constants/Api";
+import { POST_PAYMENT, PAYMENT_CONFIRMATION_RECEIPT } from "../../constants/Api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -73,6 +73,30 @@ export default function Payment(props) {
             .catch(function (response) {
                 //handle error
                 console.log(response);
+            });
+
+            const paymentDetailsForReceipt ={
+              "user_id":localStorage.getItem("userId"),
+              "amount":service?.cost,
+              "service_id":service?.service_id,
+              "dateTime": new Date().toLocaleString(),
+            };
+
+            axios
+            .post(PAYMENT_CONFIRMATION_RECEIPT, JSON.stringify(paymentDetailsForReceipt), {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              alert("Email sent.");
+            })
+            .catch(function (error) {
+              if (error.response) {
+                alert(error.response.data);
+              }
             });
 
             <Snackbar open={succeeded} autoHideDuration={6000} onClose={handleSnackClose}>

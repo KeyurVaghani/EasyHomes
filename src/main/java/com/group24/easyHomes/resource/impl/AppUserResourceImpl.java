@@ -69,7 +69,10 @@ public class AppUserResourceImpl {
                 String link = appUserResourceDTO.link + token;
 
                 String message = appUserResourceDTO.message + link;
-                sendMailService.send(savedUser.getEmail(), message);
+
+                String subject = appUserResourceDTO.subject;
+
+                sendMailService.send(savedUser.getEmail(), message,subject );
                 jsonObject.put("message", savedUser.getFirstName() + " saved successfully");
                 return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
             }
@@ -79,7 +82,7 @@ public class AppUserResourceImpl {
             }
 
 // ----------------------------------------------------
-            String link = "https://easthomes-develop.herokuapp.com/user/confirm?token=" + token;
+//            String link = "https://easthomes-develop.herokuapp.com/user/confirm?token=" + token;
 // ----------------------------------------------------
         } catch (JSONException e) {
             try {
@@ -104,6 +107,7 @@ public class AppUserResourceImpl {
                 jsonObject.put("authorities", authentication.getAuthorities());
                 if(userRepository.findByEmail(email).isPresent())
                     jsonObject.put("token", tokenProvider.createToken(email, userRepository.findByEmail(email).get().getRole()));
+                    jsonObject.put("userId", email);
                 return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
             }
         } catch (JSONException e) {

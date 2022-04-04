@@ -26,6 +26,7 @@ class ForgotControllerTest {
     private ForgotService forgotService;
 
 
+
     @Test
     void notRegisteredEmailTest() throws Exception {
 

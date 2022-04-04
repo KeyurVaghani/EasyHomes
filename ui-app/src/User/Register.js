@@ -88,6 +88,7 @@ const Register = (props) => {
       )
       .then((response) => {
         console.log(response.data);
+        alert("Please verify your email.");
         navigate("/login");
       })
       .catch(function (error) {
