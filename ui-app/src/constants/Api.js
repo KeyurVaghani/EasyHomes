@@ -1,7 +1,7 @@
 export const URL = "https://easthomes-develop.herokuapp.com";
 export const GET_SERVICE = URL + '/service/services';
 export const POST_SERVICE = URL + '/service/services';
-export const POST_SERVICE_REVIEW = URL + '/services/reviews';
+export const POST_SERVICE_REVIEW = URL + '/serviceReview/add';
 export const FILTER_SERVICE = URL + '/service/services/filter';
 export const PUT_SERVICE = URL + '/service'
 export const DELETE_SERVICE = URL + '/service/services'
