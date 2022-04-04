@@ -30,8 +30,6 @@ import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOu
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import ChatRoom from './components/chat-room/ChatRoom';
 
-import ChatRoomTab from './components/chat-room/ChatRoomTab';
-
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
 var stompClient = null;
