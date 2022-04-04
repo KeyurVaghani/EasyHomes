@@ -28,6 +28,12 @@ import axios from 'axios';
 import { IconButton } from '@mui/material';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ChatRoom from './components/chat-room/ChatRoom';
+
+import {over} from 'stompjs';
+import SockJS from 'sockjs-client';
+var stompClient = null;
+
 
 const isLogin = () => {
   return !!localStorage.getItem("token");
@@ -37,6 +43,7 @@ const isLogin = () => {
 const Public = () => <Login />;
 const PublicRegister = () => <Register />;
 const Private = () => <Dashboard />;
+const PrivateChatRoom = () => <ChatRoomSection />;
 // const Login = () => <div>login</div>;
 
 function PrivateOutlet() {
@@ -44,9 +51,19 @@ function PrivateOutlet() {
   return auth ? <Outlet /> : <Navigate to="/login" />;
 }
 
+function PrivateChatRoomOutlet() {
+  const auth = useAuth();
+  return auth ? <Outlet /> : <Navigate to="/login" />;
+}
+
 function PublicOutlet() {
   const auth = isLogin();
   return !auth ? <Outlet /> : <Navigate to="/dashboard" />;
+}
+
+function PublicChatRoomOutlet() {
+  const auth = isLogin();
+  return !auth ? <Outlet /> : <Navigate to="/chat-room" />;
 }
 
 function PublicRegisterOutlet() {
@@ -65,10 +82,71 @@ function useAuth() {
 
 
 function App() {
+
+  const [userData, setUserData] = useState({
+    username: '',
+    receivername: '',
+    connected: false,
+    message: ''
+  });
+
+  const connect = () => {
+    let Sock = new SockJS('http://192.168.0.7:8080/ws');
+    stompClient = over(Sock);
+    stompClient.connect({},onConnected, onError);
+  }
+
+  const onConnected = () => {
+    setUserData({...userData,"connected": true});
+    stompClient.subscribe('/chatroom/public', onMessageReceived);
+    // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
+    userJoin();
+  }
+
+  const onMessageReceived = (payloadData) => {
+    console.log(payloadData);
+  }
+
+  // const onMessageReceived = (payload)=>{
+  //   var payloadData = JSON.parse(payload.body);
+  //   switch(payloadData.status){
+  //     case "JOIN":
+  //       if(!privateChats.get(payloadData.senderName)){
+  //         privateChats.set(payloadData.senderName,[]);
+  //         setPrivateChats(new Map(privateChats));
+  //         if (payloadData.senderName != userData.username) {
+  //             setTab(payloadData.senderName);
+  //         }
+  //       }
+  //       userJoin();
+  //       break;
+  //     case "MESSAGE":
+  //       publicChats.push(payloadData);
+  //       setPublicChats([...publicChats]);
+  //       break;
+  //   }
+  // }
+
+  const userJoin=()=>{
+    var chatMessage = {
+      senderName: userData.username,
+      status:"JOIN"
+    };
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  }
+
+  const onError = (err) => {
+    console.log(err);
+    
+}
+
   return (
     <Routes>
       <Route path="/dashboard" element={<PrivateOutlet />}>
         <Route path="" element={<Private />} />
+      </Route>
+      <Route path="/chat-room" element={<PrivateChatRoomOutlet />}>
+        <Route path="" element={<PrivateChatRoom />} />
       </Route>
       <Route path="login" element={<PublicOutlet />}>
         <Route path="" element={<Public />} />
@@ -128,10 +206,6 @@ const Dashboard = () => {
           <Collapse orientation="horizontal" in={checked} collapsedSize={50}>
             {filterMenuBar}
           </Collapse>
-          {/* <FilterMenu /> */}
-          {/* <Slide direction="left" in={checked} mountOnEnter unmountOnExit>
-            {icon}
-          </Slide> */}
         </Box>
         <Box sx={{ width: getContentWidth() }}>
           <Box>
@@ -140,6 +214,8 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
+      {/* <ChatRoom></ChatRoom> */}
+      {/* <ChatRoomSection></ChatRoomSection> */}
       {/* <Container>
         <FilterMenu />
       </Container>
@@ -150,6 +226,15 @@ const Dashboard = () => {
     </>
   );
 };
+
+const ChatRoomSection = () => {
+  return (
+    <>
+      <NavBar />
+      <ChatRoom></ChatRoom>
+    </>
+  );
+}
 
 
 export default App;

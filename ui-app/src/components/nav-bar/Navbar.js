@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import ChatIcon from '@mui/icons-material/Chat';
 
 import { customTheme } from '../../utils/theme';
 import { logoutUser } from '../../reducers/app/appSlice';
@@ -140,6 +141,12 @@ export default function ElevateAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const navigateToChatRoom = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    navigate('/chat-room');
+  };
+
   const menuId = "primary-search-account-menu";
   // const filterMenuId = "primary-search-account-menu";
   const renderMenu = (
@@ -180,6 +187,14 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <IconButton onClick={(e) => { navigateToChatRoom(e) }} size="large" aria-label={`show chats`} color="inherit">
+          <Badge color="error">
+            <ChatIcon />
+          </Badge>
+        </IconButton>
+        <p>chats</p>
+      </MenuItem>
       <MenuItem>
         <IconButton size="large" aria-label={`show ${messagesCount} new messages`} color="inherit">
           <Badge badgeContent={messagesCount} color="error">
@@ -230,6 +245,13 @@ export default function ElevateAppBar(props) {
     p: 4,
   };
 
+
+  const handleTitleClick = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    navigate('/dashboard');
+  }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -242,7 +264,8 @@ export default function ElevateAppBar(props) {
                   variant="h6"
                   noWrap
                   component="div"
-                  sx={{ display: { xs: "none", sm: "block" } }}>
+                  onClick={(e) => handleTitleClick(e)}
+                  sx={{ display: { xs: "none", sm: "block", cursor: 'pointer' } }}>
                   {title}
                 </Typography>
                 <Search>
@@ -267,6 +290,12 @@ export default function ElevateAppBar(props) {
                 </Search>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                  <IconButton onClick={(e) => { navigateToChatRoom(e) }} size="large" aria-label={`show chats`} color="inherit">
+                    <Badge color="error">
+                      <ChatIcon />
+                    </Badge>
+                  </IconButton>
+
                   <IconButton
                     size="large"
                     aria-label={`show ${messagesCount} new messages`}
