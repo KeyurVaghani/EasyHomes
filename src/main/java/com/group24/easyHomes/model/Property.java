@@ -29,7 +29,7 @@ public class Property {
     private int bedrooms = 0;
     private int bathrooms =0;
     boolean parking_included = false;
-    double rent =0.0;
+    double rent = 0.0;
     private long user_id;
     private String user_name;
 

@@ -93,9 +93,12 @@ public class AppUserResourceImpl {
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
             if (authentication.isAuthenticated()) {
                 String email = user.getEmail();
+                Long userId = userRepository.findByEmail(email).get().getId();
+                String firstName = userRepository.findById(userId).get().getFirstName();
                 jsonObject.put("name", authentication.getName());
                 jsonObject.put("authorities", authentication.getAuthorities());
-                 jsonObject.put("userId", userRepository.findByEmail(email).get().getId());
+                 jsonObject.put("userId", userId);
+                 jsonObject.put("username", firstName);
                 jsonObject.put("token", tokenProvider.createToken(email, userRepository.findByEmail(email).get().getRole()));
                 return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
             }

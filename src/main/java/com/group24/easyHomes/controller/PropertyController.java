@@ -53,7 +53,7 @@ public class PropertyController {
 
             Property property = propertyDTOToProperty.convert(propertyDTO);
             AppUser user = userService.getById(propertyDTO.getUser_id());
-            String name = null ;
+            String name = null;
             if( user!= null)
             {
                 name = user.getFirstName() + " " + user.getLastName();

@@ -15,9 +15,15 @@ public class ChatController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @MessageMapping("/message-notification")
+    @SendTo("/message-notification")
+    public Message receiveMessage(@Payload Message message){
+        return message;
+    }
+
     @MessageMapping("/message")
     @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
+    public Message receiveNotification(@Payload Message message){
         return message;
     }
 

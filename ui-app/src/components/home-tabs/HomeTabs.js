@@ -18,6 +18,9 @@ import { AddFavorite } from '../Icons'
 import Property from "../property/Property";
 
 import Skeleton from '@mui/material/Skeleton';
+import ChatIcon from '@mui/icons-material/Chat';
+
+import { generatePath, useNavigate } from 'react-router';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -42,7 +45,14 @@ function TabPanel(props) {
 const RenderProperty = ({ property }, index) => {
   const dispatch = useDispatch();
   const blobData = property.images[0]?.image_data;
+  const navigate = useNavigate();
 
+  const navigateToChatRoom = (event, property) => {
+    if (event) {
+      event.preventDefault();
+    }
+    navigate('/chat-room', { state: { chatPeerInfo: property.user_name} });
+  }
   return (
     <>
       <Property />
@@ -88,6 +98,8 @@ const RenderProperty = ({ property }, index) => {
           <CardActions>
             <Button onClick={() => dispatch(openModelProperty({ homeDialogProperty: { isOpen: true, property: property } }))}
               size="small">Learn More</Button>
+            <Button onClick={(e) => navigateToChatRoom(e, property)}
+              size="small">Chat</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -99,6 +111,15 @@ const RenderProperty = ({ property }, index) => {
 const RenderService = ({ service }, index) => {
   const dispatch = useDispatch();
   const blobData = service.images[0]?.image_data;
+
+  const navigate = useNavigate();
+  const navigateToChatRoom = (event, service) => {
+    if (event) {
+      event.preventDefault();
+    }
+    navigate('/chat-room', { state: { chatPeerInfo: service.user_name} });
+  }
+
   return (
     <>
       <Service />
@@ -148,6 +169,8 @@ const RenderService = ({ service }, index) => {
           </CardContent>
           <CardActions>
             <Button onClick={() => dispatch(openModel({ homeDialog: { isOpen: true, service: service } }))} size="small">Learn More</Button>
+            <Button onClick={(e) => { navigateToChatRoom(e, service) }}
+              size="small">Chat</Button>
           </CardActions>
         </Card>
       </Grid>
