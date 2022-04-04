@@ -27,6 +27,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 import { filterProperties, filterServices } from '../../reducers/app/thunks/appThunk';
+
+import {useState} from "react";
+import FavList from "../favoritesList/FavList"
+import {Modal} from "@mui/material";
+
 function ElevationScroll(props) {
   const { children } = props;
 
@@ -196,7 +201,7 @@ export default function ElevateAppBar(props) {
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <Typography>Messages</Typography>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -208,7 +213,7 @@ export default function ElevateAppBar(props) {
             <StarOutlineIcon />
           </Badge>
         </IconButton>
-        <p>Favourites</p>
+        <Typography>Favourites</Typography>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -220,10 +225,26 @@ export default function ElevateAppBar(props) {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <Typography>Profile</Typography>
       </MenuItem>
     </Menu>
   );
+
+  const [openFavList, setOpenFavList] = useState(false);
+  const handleOpen = () => setOpenFavList(true);
+  const handleClose = () => setOpenFavList(false);
+  const favListStyle = {
+    position: 'absolute',
+    top: '5%',
+    left: '28%',
+    width: '44%',
+    borderRadius: '10px',
+    bgcolor: 'background.paper',
+    border: '2px solid dimgray',
+    boxShadow: 24,
+    p: 4,
+  };
+
 
   const handleTitleClick = (event) => {
     if (event) {
@@ -287,11 +308,17 @@ export default function ElevateAppBar(props) {
                   <IconButton
                     size="large"
                     aria-label={`show ${favouritesCount} favourites`}
-                    color="inherit">
+                    color="inherit"
+                    onClick={handleOpen}>
                     <Badge badgeContent={favouritesCount} color="error">
                       <StarOutlineIcon />
                     </Badge>
                   </IconButton>
+                  <Modal open={openFavList} onClose={handleClose} sx={{overflow:"auto"}}>
+                    <Box sx={favListStyle}>
+                      <FavList />
+                    </Box>
+                  </Modal>
                   <IconButton
                     size="large"
                     edge="end"

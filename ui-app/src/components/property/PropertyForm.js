@@ -14,7 +14,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormLabel from '@mui/material/FormLabel';
-import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -26,14 +25,12 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 
 export default function SimpleDialog(props) {
-    const { open, title, setDialogOpenState } = props;
+    const { open, title, setDialogOpenState, setToastMessage, setToastContent } = props;
     const [propertyName, setPropertyName] = React.useState('');
     const [propertyType, setPropertyType] = React.useState('');
     const [bedrooms, setBedrooms] = React.useState('');
     const [bathrooms, setBathrooms] = React.useState('');
     const [rent, setRentChange] = React.useState('');
-    const[files,setFiles] = React.useState([]);
-    const [base64Data, setBase64Data ] = React.useState('');
     const [propertyLocation, setPropertyLocation ] = React.useState('');
     const [city, setCity ] = React.useState('');
     const [province, setProvince ] = React.useState('');
@@ -42,12 +39,9 @@ export default function SimpleDialog(props) {
     const [base64Images, setbase64Images] = React.useState([]);
     const [snackbar, setSnackBar] = React.useState(false);
     const [severity, setSeverity] = React.useState('success');
-    const [disabled, setDisabled] = React.useState(false);
 
     const images = [];
 
-   
-  
     const handleSnackClose = (event, reason) => {
       if (reason === 'clickaway') {
         return;
@@ -90,16 +84,11 @@ export default function SimpleDialog(props) {
   
     const _handleReaderLoaded = e => {
       let binaryString = e.target.result;
-      const newbase64Images = [...base64Images];
-      
-      // setbase64Data(base64String); // <- your binaryString here
-      // newbase64Images[]
       const base64Image = {
         image_data: btoa(binaryString)
       }
       images.push(base64Image)
       setbase64Images(images);
-      // setbase64Images([...base64Images, base64Image]);
     };
 
     const [state, setState] = React.useState({
@@ -148,7 +137,6 @@ export default function SimpleDialog(props) {
       setPostalCode(event.target.value);
     };
     const handleClose = () => {
-        // onClose();
         setDialogOpenState();
       };
 
@@ -176,7 +164,6 @@ export default function SimpleDialog(props) {
     
 
       const submitPropertyPost = (initialValues) => {
-        console.log(propertyType);
        const property ={
          "user_id": localStorage.getItem("userId"),
           "property_name": propertyName,
@@ -211,10 +198,11 @@ export default function SimpleDialog(props) {
             setSeverity("success");
             setDialogOpenState(false);
             resetForm();
+            setToastMessage(true);
+            setToastContent("Property added successfully!");
             console.log(snackbar);
         })
         .catch(function (response) {
-            //handle error
             console.log(response);
         });
       };
@@ -446,8 +434,6 @@ export default function SimpleDialog(props) {
             This is a success message!
           </Alert>
         </Snackbar> */}
-        {/* <Alert severity="error">This is an error message!</Alert> */}
-        {/* <Alert severity="success">Property posted successfully</Alert> */}
       </Container>
       </form>
     
