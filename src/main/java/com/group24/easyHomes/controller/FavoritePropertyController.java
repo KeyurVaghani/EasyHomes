@@ -1,8 +1,10 @@
 package com.group24.easyHomes.controller;
 
 import com.group24.easyHomes.model.FavoriteProperty;
+import com.group24.easyHomes.model.Property;
 import com.group24.easyHomes.repository.FavoritePropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +23,19 @@ public class FavoritePropertyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity newFavoriteProperty(@RequestBody FavoriteProperty favoriteProperty) {
-        FavoriteProperty addedFavoriteProperty = new FavoriteProperty();
-        addedFavoriteProperty.setUser_id(favoriteProperty.getUser_id());
-        addedFavoriteProperty.setProperty_id(favoriteProperty.getProperty_id());
-        addedFavoriteProperty = favoritePropertyRepository.save(addedFavoriteProperty);
-        return ResponseEntity.ok(addedFavoriteProperty);
+    public ResponseEntity<FavoriteProperty> newFavoriteProperty(@RequestBody FavoriteProperty favoriteProperty) {
+        favoriteProperty = favoritePropertyRepository.save(favoriteProperty);
+        return new ResponseEntity<>(favoritePropertyRepository.save(favoriteProperty), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public List<FavoriteProperty> getFavoriteProperties(@PathVariable Long userId) {
-        return favoritePropertyRepository.findByUserId(userId);
+    public ResponseEntity<List<FavoriteProperty>> getFavoriteProperties(@PathVariable Long userId) {
+        return new ResponseEntity<>(favoritePropertyRepository.findByUserId(userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{favoritePropertyId}")
-    public ResponseEntity deleteFavoriteProperty(@PathVariable Long favoritePropertyId) {
+    public ResponseEntity<HttpStatus> deleteFavoriteProperty(@PathVariable Long favoritePropertyId) {
         favoritePropertyRepository.deleteById(favoritePropertyId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

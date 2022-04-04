@@ -2,14 +2,68 @@ import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, 
 import *  as React from "react";
 import { AddFavorite } from "../Icons";
 import Service from "./Service";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import { FAVORITE_SERVICE } from "../../constants/Api";
 
 export const RenderService = ({ service, handlePost }) => {
     const blobData= service.images[0]?.image_data ;
     const [dialogOpened, setDialogOpened] = React.useState(false);
     const imageSrc = blobData ? `data:image/jpeg;base64,${blobData}` : ''
-  
+
     const date = service?.posted_on
     const postedDate = date ? date.split('T')[0] : ''
+
+    const [favS, setFavS]=useState(false);
+    const [btnColor, setBtnColor] = useState("grey");
+    const [favSId, setFavSId] = useState(0);
+
+    const InitFavState = () => {
+        axios.get(FAVORITE_SERVICE + localStorage.getItem("userId"))
+            .then((response) => {
+                // console.log(response.data);
+                let favSArr = response.data;
+                favSArr.map((item) => {
+                    if (item.service_id === service.service_id) {
+                        setBtnColor("red");
+                        setFavSId(item.favorite_service_id);
+                        setFavS(true);
+                    }
+                })
+            })
+    }
+
+    const ToggleFavS=(favSId)=>{
+        setFavS((favS) => {
+            if (favS === true && favSId!==0) {
+                axios.delete(FAVORITE_SERVICE+"delete/"+favSId)
+                    .then((response) => {
+                        setBtnColor("grey");
+                        setFavS(false);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+            if (favS === false) {
+                axios.post(FAVORITE_SERVICE+"add", {
+                    user_id: localStorage.getItem("userId"),
+                    service_id: service.service_id
+                })
+                    .then((response) => {
+                        console.log(response.data);
+                        setBtnColor("red");
+                        setFavS(true);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        });
+    }
+
+    InitFavState();
+
     return (
       <>
       {dialogOpened?<Service
@@ -33,7 +87,11 @@ export const RenderService = ({ service, handlePost }) => {
             image={imageSrc}
           />
           <CardActions disableSpacing style={{justifyContent:'space-between'}}>
-          <IconButton aria-label="add to favorites">
+          <IconButton aria-label="add to favorites"
+                      style={{ color: btnColor}}
+                      onClick={()=>{
+                          ToggleFavS(favSId);
+                      }}>
             <AddFavorite />
             </IconButton>
         </CardActions>
@@ -45,14 +103,14 @@ export const RenderService = ({ service, handlePost }) => {
             <Typography >{service.description>100?
               service.description.substring(0,100)+'...'
               :service.description}</Typography>
-  
+
           <Typography fontSize={16}  fontWeight='bold'>Subscription</Typography>
             <Stack direction="row" spacing={1}>
             <Chip size="small" label={service.plan}/>
             </Stack>
             <Typography marginTop={2.5} fontSize={16}>{service.address + " ,"+ service.pincode}</Typography>
-            
-            <Typography fontSize={16}>{service.city + ",  " 
+
+            <Typography fontSize={16}>{service.city + ",  "
             + service.province + ", " +  service.country} </Typography>
           </CardContent>
           <CardActions>
@@ -64,7 +122,7 @@ export const RenderService = ({ service, handlePost }) => {
       </>
     );
   };
-  
+
   const style = {
     ServiceFeed: {
       backgroundColor: "#F5F5F5",
