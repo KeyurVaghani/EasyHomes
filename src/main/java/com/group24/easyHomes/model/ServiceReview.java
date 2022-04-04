@@ -21,7 +21,7 @@ public class ServiceReview {
     private int review_id;
 
     @Column(name = "user_id")
-    private String user_id;  //needs to be linked to User
+    private Long user_id;  //needs to be linked to User
     @Column(name = "review_subject")
     private String review_subject;
     @Column(name = "review_description")
@@ -46,8 +46,7 @@ public class ServiceReview {
 
     }
 
-    public ServiceReview(int review_id, String user_id, String review_subject, String review_description, int review_rating, Services services) {
-        this.review_id = review_id;
+    public ServiceReview( Long user_id, String review_subject, String review_description, int review_rating, Services services) {
         this.user_id = user_id;
         this.review_subject = review_subject;
         this.review_description = review_description;

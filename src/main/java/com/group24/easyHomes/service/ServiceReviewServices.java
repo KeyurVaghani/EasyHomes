@@ -56,7 +56,7 @@ public class ServiceReviewServices {
         return savedReview.get();
     }
 
-    public void deletebyId(Long serviceID, Long reviewIDToDelete){
+    public boolean deletebyId(Long serviceID, Long reviewIDToDelete){
         Optional<Services> servicesOptional = serviceRepository.findById(serviceID);
 
         if (servicesOptional.isPresent()){
@@ -69,8 +69,10 @@ public class ServiceReviewServices {
                 services.getReviews().remove(serviceReview);
                 serviceReview.setServices(null);
                 serviceRepository.save(services);
+                return true;
             }
         }
+        return false;
     }
 
     
