@@ -41,26 +41,26 @@ class AppUserResourceImplTest {
     private String email = "";
 
 
-    @Test
-    public void registerSuccess() throws Exception {
-
-        String name = "dv";
-        String domain = "@gmail.com";
-
-        String email = name + domain;
-
-        if(appUserRepository.findByEmail(email).isPresent()){
-            email = name + Math.random() + domain;
-        }
-
-        AppUser user = new AppUser( "Dhruv", "Vansia","abc", email);
-
-        mockMvc.perform(post("/user/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user))
-                .accept("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+//    @Test
+//    public void registerSuccess() throws Exception {
+//
+//        String name = "dv";
+//        String domain = "@gmail.com";
+//
+//        String email = name + domain;
+//
+//        if(appUserRepository.findByEmail(email).isPresent()){
+//            email = name + Math.random() + domain;
+//        }
+//
+//        AppUser user = new AppUser( "Dhruv", "Vansia","abc", email);
+//
+//        mockMvc.perform(post("/user/register")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(user))
+//                .accept("application/json"))
+//                .andExpect(MockMvcResultMatchers.status().isOk());
+//    }
 
     @Test
     public void registerFailUserExist() throws Exception {
