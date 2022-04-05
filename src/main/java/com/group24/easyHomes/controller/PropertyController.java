@@ -42,8 +42,9 @@ public class PropertyController {
 
             Set<PropertyImages> propertyImages = new HashSet<>();
             Property property = propertyDTOToProperty.convert(propertyDTO);
-
-            for(MultipartFile file:files)
+            AppUser user = userService.getById(propertyDTO.getUser_id());
+            String name = null;
+            if( user!= null)
             {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                 PropertyImages image = new PropertyImages(fileName, file.getContentType(), file.getBytes());
