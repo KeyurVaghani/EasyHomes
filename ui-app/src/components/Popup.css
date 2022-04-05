@@ -5,6 +5,8 @@
     height: 1000vh;
     top: 0;
     left: 0;
+    position: absolute;
+    z-index: 10;
   }
    
   .box {
@@ -14,11 +16,11 @@
     height: 50vh;
     max-height: 100vh;
     margin-top: calc(100vh - 85vh - 20px);
-    background: #fff;
+    background: white;
     border-radius: 4px;
     padding: 20px;
     border: 1px solid #999;
-    overflow: auto;
+
   }
    
   .close-icon {

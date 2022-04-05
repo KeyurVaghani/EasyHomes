@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 class PropertyScheduleMeetingControllerTest {
 
     @Autowired
@@ -26,7 +28,7 @@ class PropertyScheduleMeetingControllerTest {
 
         mockMvc.perform(post("/property/owner/contact")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"user_id\":\"iamdv43@gmail.com\",\"property_id\":\"57\"," +
+                .content("{\"user_id\":\"iamdv43@gmail.com\",\"property_id\":\"1\"," +
                         "\"property_user_id\":\"1\",\"message\":\"test\"," +
                         "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
                 .accept("application/json"))
@@ -38,8 +40,8 @@ class PropertyScheduleMeetingControllerTest {
 
         mockMvc.perform(post("/property/owner/contact")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"user_id\":\"iamdv43@gmail.com\",\"property_id\":\"1\"," +
-                        "\"property_user_id\":\"1\",\"message\":\"test\"," +
+                .content("{\"user_id\":\"iamdv43@gmail.com\",\"property_id\":\"100\"," +
+                        "\"property_user_id\":\"1000\",\"message\":\"test\"," +
                         "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
                 .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isConflict());

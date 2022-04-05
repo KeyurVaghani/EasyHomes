@@ -33,10 +33,10 @@ public class SendMailService{
     public void send(String emailID, String content, String subject) {
         try{
             JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-            mailSender.setHost(this.emailConfig.getHost());
-            mailSender.setPort(this.emailConfig.getPort());
-            mailSender.setUsername(this.emailConfig.getSenderEmail());
-            mailSender.setPassword(this.emailConfig.getSenderpassword());
+            mailSender.setHost(emailConfig.getHost());
+            mailSender.setPort(emailConfig.getPort());
+            mailSender.setUsername(emailConfig.getSenderEmail());
+            mailSender.setPassword(emailConfig.getSenderpassword());
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");

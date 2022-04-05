@@ -41,7 +41,7 @@ public class PropertyScheduleMeetingController {
         try{
             Property propertyDetails = propertyRepository.findByProperty(Integer.parseInt(scheduleMeetingDetails.get("property_id")));
             AppUser serviceOwner = appUserRepository.findByUserId(Long.valueOf((scheduleMeetingDetails.get("property_user_id"))));
-            AppUser interestedUser = appUserRepository.findByUserEmail(scheduleMeetingDetails.get("user_id"));
+            AppUser interestedUser = appUserRepository.findByUserEmail((scheduleMeetingDetails.get("user_id")));
 
             String contentHTML = env.getProperty("email.property.meeting.body");
             String datetime = scheduleMeetingDetails.get("appointmentTime");

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 public class AppUserResourceImpl {
 
@@ -103,12 +103,14 @@ public class AppUserResourceImpl {
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
             if (authentication.isAuthenticated()) {
                 String email = user.getEmail();
+                Long userId = userRepository.findByEmail(email).get().getId();
+                String firstName = userRepository.findById(userId).get().getFirstName();
                 jsonObject.put("name", authentication.getName());
                 jsonObject.put("authorities", authentication.getAuthorities());
-                if(userRepository.findByEmail(email).isPresent())
-                    jsonObject.put("token", tokenProvider.createToken(email, userRepository.findByEmail(email).get().getRole()));
-                    jsonObject.put("userId", email);
-                return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+                 jsonObject.put("userId", userId);
+                 jsonObject.put("username", firstName);
+                jsonObject.put("token", tokenProvider.createToken(email, userRepository.findByEmail(email).get().getRole()));
+                return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
             }
         } catch (JSONException e) {
             try {

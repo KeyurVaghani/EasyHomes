@@ -41,8 +41,6 @@ public class AppUserService implements UserDetailsService {
             String token = UUID.randomUUID().toString();
 
             TokenValidation tokenValidation = new TokenValidation(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60*24),appUser);
-//        TokenValidation tokenValidation = new TokenValidation(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(60*24),appUser);
-
 
             tokenValidationService.storeToken(tokenValidation);
 

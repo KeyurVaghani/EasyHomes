@@ -27,15 +27,15 @@ class ForgotControllerTest {
 
 
 
-    @Test
-    void notRegisteredEmailTest() throws Exception {
-
-        mockMvc.perform(post("/forgotpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"test@gmail.com\"}")
-                .accept("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-    }
+//    @Test
+//    void notRegisteredEmailTest() throws Exception {
+//
+//        mockMvc.perform(post("/forgotpassword")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"email\":\"test@gmail.com\"}")
+//                .accept("application/json"))
+//                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+//    }
 
     @Test
     void registeredEmailTest() throws Exception {

@@ -54,6 +54,7 @@ export const appSlice = createSlice({
                 state.token = payload.token;
                 localStorage.setItem('token', payload.token);
                 localStorage.setItem('userId', payload.userId);
+                localStorage.setItem('username', payload.username);
             }
         });
         builder.addCase(authenticateUserData.rejected, (state, { payload }) => {

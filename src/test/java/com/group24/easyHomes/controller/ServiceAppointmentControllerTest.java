@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -17,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 class ServiceAppointmentControllerTest {
 
     @Autowired
@@ -40,7 +42,7 @@ class ServiceAppointmentControllerTest {
         mockMvc.perform(post("/service/contact")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"1\"," +
-                        "\"service_user_id\":\"1\",\"message\":\"test\"," +
+                        "\"service_user_id\":\"100\",\"message\":\"test\"," +
                         "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
                 .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isConflict());
