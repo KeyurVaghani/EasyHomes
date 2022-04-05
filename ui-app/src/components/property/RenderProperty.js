@@ -6,6 +6,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import { FAVORITE_PROPERTY } from "../../constants/Api";
 
+import ChatIcon from '@mui/icons-material/Chat';
+import { generatePath, useNavigate } from 'react-router';
+
 export const RenderProperty = ({ property }) => {
     const blobData= property.images[0]?.image_data ;
     const [dialogOpened, setDialogOpened] = React.useState(false);
@@ -66,6 +69,14 @@ export const RenderProperty = ({ property }) => {
 
     InitFavState();
 
+    const navigate = useNavigate();
+    const navigateToChatRoom = (event, property) => {
+      if (event) {
+        event.preventDefault();
+      }
+      navigate('/chat-room', { state: { chatPeerInfo: property.user_name} });
+    }
+
     return (
         <>
         {dialogOpened?<Property
@@ -113,8 +124,10 @@ export const RenderProperty = ({ property }) => {
                     + property.address.province + ", " +  property.address.country} </Typography>
               </CardContent>
               <CardActions>
-              <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
+                <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
                         size="small">Learn More</Button>
+                <Button onClick={(e) => navigateToChatRoom(e, property)}
+                size="small">Chat</Button>
               </CardActions>
             </Card>
       </Grid>

@@ -90,22 +90,22 @@ function App() {
     message: ''
   });
 
-  const connect = () => {
-    let Sock = new SockJS('http://192.168.0.7:8080/ws');
-    stompClient = over(Sock);
-    stompClient.connect({},onConnected, onError);
-  }
+  // const connect = () => {
+  //   let Sock = new SockJS('http://192.168.0.7:8080/ws');
+  //   stompClient = over(Sock);
+  //   stompClient.connect({},onConnected, onError);
+  // }
 
-  const onConnected = () => {
-    setUserData({...userData,"connected": true});
-    stompClient.subscribe('/chatroom/public', onMessageReceived);
-    // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
-    userJoin();
-  }
+  // const onConnected = () => {
+  //   setUserData({...userData,"connected": true});
+  //   stompClient.subscribe('/chatroom/public', onMessageReceived);
+  //   // stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
+  //   userJoin();
+  // }
 
-  const onMessageReceived = (payloadData) => {
-    console.log(payloadData);
-  }
+  // const onMessageReceived = (payloadData) => {
+  //   console.log(payloadData);
+  // }
 
   // const onMessageReceived = (payload)=>{
   //   var payloadData = JSON.parse(payload.body);
