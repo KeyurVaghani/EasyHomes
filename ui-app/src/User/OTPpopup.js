@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { OTP_VERIFICATION } from '../constants/Api';
 import axios from "axios";
 
 
@@ -27,7 +27,7 @@ const OTPpopup = ({setStage})  =>{
     
         axios
           .post(
-            "http://localhost:8080/otpverification",
+            OTP_VERIFICATION,
             { otp: otp },
             {
               headers: {

@@ -29,7 +29,7 @@ class ServiceAppointmentControllerTest {
 
         mockMvc.perform(post("/service/contact")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"16\"," +
+                .content("{\"user_id\":\"1\",\"service_id\":\"16\"," +
                         "\"service_user_id\":\"1\",\"message\":\"test\"," +
                         "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
                 .accept("application/json"))

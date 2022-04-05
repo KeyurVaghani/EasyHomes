@@ -27,25 +27,25 @@ class ForgotControllerTest {
 
 
 
-//    @Test
-//    void notRegisteredEmailTest() throws Exception {
-//
-//        mockMvc.perform(post("/forgotpassword")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"email\":\"test@gmail.com\"}")
-//                .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-//    }
+    @Test
+    void notRegisteredEmailTest() throws Exception {
 
-//    @Test
-//    void registeredEmailTest() throws Exception {
-//
-//        mockMvc.perform(post("/forgotpassword")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"email\":\"iamdv43@gmail.com\"}")
-//                .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isAccepted());
-//    }
+        mockMvc.perform(post("/user/forgotpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"test852474@gmail.com\"}")
+                .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    void registeredEmailTest() throws Exception {
+
+        mockMvc.perform(post("/user/forgotpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"iamdv43@gmail.com\"}")
+                .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isAccepted());
+    }
 
     @Test
     void otpverificationPass() throws Exception {
@@ -53,7 +53,7 @@ class ForgotControllerTest {
         int testOTP = 123;
         forgotService.setOtp(testOTP);
 
-        mockMvc.perform(post("/otpverification")
+        mockMvc.perform(post("/user/otpverification")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"otp\":123}")
                 .accept("application/json"))
@@ -67,7 +67,7 @@ class ForgotControllerTest {
         int testOTP = 123;
         forgotService.setOtp(testOTP);
 
-        mockMvc.perform(post("/otpverification")
+        mockMvc.perform(post("/user/otpverification")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"otp\":124}")
                 .accept("application/json"))
@@ -78,7 +78,7 @@ class ForgotControllerTest {
     @Test
     void newpasswordPass() throws Exception {
 
-        mockMvc.perform(post("/newpassword")
+        mockMvc.perform(post("/user/newpassword")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"iamdv43@gmail.com\", \"password\":\"Dhruv\"}")
                 .accept("application/json"))

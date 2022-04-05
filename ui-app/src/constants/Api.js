@@ -22,5 +22,7 @@ export const PAYMENT_CONFIRMATION_RECEIPT = URL + "/paymentreceipt/confirmation"
 export const FAVORITE_PROPERTY = URL + '/favorite-property/';
 export const FAVORITE_SERVICE = URL + '/favorite-service/';
 export const FORGOT_PASSWORD = URL + '/user/forgotpassword';
+export const OTP_VERIFICATION = URL + "/user/otpverification";
+export const NEW_PASSWORD = URL + "/user/newpassword";
 
 export const SOCKET_URL = URL + '/ws';

@@ -90,23 +90,23 @@ public class AppUserResourceImplUnitTest {
         mockMvc.perform(request).andExpect(status().isOk());
     }
 
-    @Test
-    @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
-    public void authenticate_Success() throws Exception {
-        AppUser user = new AppUser( "test", "test","test@123", "test@gmail.com");
-        Optional<AppUser> optionalUser = Optional.of(user);
-
-        doReturn(true).when(authentication).isAuthenticated();
-        doReturn("").when(authentication).getName();
-        doReturn(null).when(authentication).getAuthorities();
-        doReturn(authentication).when(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        doReturn(optionalUser).when(userRepository).findByEmail(any());
-        doReturn("").when(tokenProvider).createToken(any(),any());
-
-        MockHttpServletRequestBuilder request = post("/user/authenticate");
-        request= request.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user));
-        mockMvc.perform(request).andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
+//    public void authenticate_Success() throws Exception {
+//        AppUser user = new AppUser( "test", "test","test@123", "test@gmail.com");
+//        Optional<AppUser> optionalUser = Optional.of(user);
+//
+//        doReturn(true).when(authentication).isAuthenticated();
+//        doReturn("").when(authentication).getName();
+//        doReturn(null).when(authentication).getAuthorities();
+//        doReturn(authentication).when(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+//        doReturn(optionalUser).when(userRepository).findByEmail(any());
+//        doReturn("").when(tokenProvider).createToken(any(),any());
+//
+//        MockHttpServletRequestBuilder request = post("/user/authenticate");
+//        request= request.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user));
+//        mockMvc.perform(request).andExpect(status().isOk());
+//    }
 
 
 

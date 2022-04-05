@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { NEW_PASSWORD } from '../constants/Api';
 
 
 const theme = createTheme();
@@ -38,7 +39,7 @@ const NewPassword = ({email})  =>{
         console.log(email);
         axios
         .post(
-          "http://localhost:8080/newpassword",
+          NEW_PASSWORD,
           {email: email, password: password },
           {
             headers: {
