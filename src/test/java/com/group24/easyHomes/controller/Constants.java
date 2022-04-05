@@ -1,5 +1,9 @@
 package com.group24.easyHomes.controller;
 
+import com.group24.easyHomes.model.Property;
+import com.group24.easyHomes.model.PropertyAddress;
+import com.group24.easyHomes.model.PropertyListQuery;
+
 public class Constants {
 
     public static final int propertyID = 10;
@@ -21,5 +25,12 @@ public class Constants {
     public static final int reviewIDToBeDeleted = 3000;
 
 
+
+    public static final PropertyAddress address = new PropertyAddress("University Street",
+            "Halifax",
+            "Canada",
+            "H2Y8IK", "NS");
+
+    public static final Property property = new Property("test", address, "Wifi", "House", true, 500.0, 2, 2, 1);
 
 }
