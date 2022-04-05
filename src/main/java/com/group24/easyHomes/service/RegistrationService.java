@@ -1,12 +1,9 @@
 package com.group24.easyHomes.service;
 
-import com.group24.easyHomes.dto.RegistrationRequest;
-import com.group24.easyHomes.model.AppUser;
-import com.group24.easyHomes.model.AppUserRole;
 import com.group24.easyHomes.model.TokenValidation;
-import com.group24.easyHomes.utils.ConstantUtils;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,42 +15,21 @@ public class RegistrationService {
 
     private final AppUserService appUserService;
     private final TokenValidationService tokenValidationService;
-    private final SendMailService sendMailService;
 
-//    public String register(RegistrationRequest request) {
-//
-//        String token =  appUserService.signUpUser(
-//                            new AppUser(
-//                        request.getFirstName(),
-//                        request.getLastName(),
-//                        request.getPassword(),
-//                        request.getEmail()
-//                            )
-//        );
-//
-//        String link = "http://127.0.0.1:8080/api/v1/registration/confirm?token=" + token;
-//
-//        String message = "Hello,\n" +
-//                "Please verify your email id through following link:\n" +
-//                "Link: " +  link + " \n" +
-//                "Thank you\n" +
-//                "EasyHomes";
-//        sendMailService.send(request.getEmail(), message);
-//
-//        return token;
-//    }
+    @Autowired
+    private final Environment env;
 
     @Transactional
     public String confirmToken(String token){
         TokenValidation tokenValidation = tokenValidationService.getToken(token).orElseThrow(() ->
-                new IllegalStateException("token not found"));;
+                new IllegalStateException(env.getProperty("token.not.found")));
 
         if(tokenValidation.getVerifiedTime() != null){
-            return "email is already verified.";
+            return env.getProperty("email.verified");
         }
 
         if(tokenValidation.getEndTime().isBefore(LocalDateTime.now())){
-            return "Token expired";
+            return env.getProperty("token.expired");
         }
 
         tokenValidationService.setVerifiedAt(token);

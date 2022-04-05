@@ -8,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
 import SendIcon from '@mui/icons-material/Send';
 
+import { SOCKET_URL } from '../../../src/constants/Api';
+
 var stompClient =null;
 const ChatRoom = () => {
     const [privateChats, setPrivateChats] = useState(new Map());     
@@ -45,7 +47,7 @@ const ChatRoom = () => {
 
 
     const connect = () => {
-        let Sock = new SockJS('http://192.168.0.7:8080/ws');
+        let Sock = new SockJS(SOCKET_URL);
         stompClient = over(Sock);
         stompClient.connect({},onConnected, onError);
     }

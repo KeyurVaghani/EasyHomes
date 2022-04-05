@@ -1,36 +1,31 @@
-//package com.group24.easyHomes.security.config;
-//
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-//import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-//import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//
-//@EnableWebMvc
-//@Configuration
-//public class MvcConfig implements WebMvcConfigurer {
-//
-////    public void addViewControllers(ViewControllerRegistry registry) {
-//////        registry.addViewController("/home").setViewName("home");
-//////        registry.addViewController("/").setViewName("home");
-//////        registry.addViewController("/hello").setViewName("hello");
-////        registry.addViewController("/login").setViewName("login");
-////    }
-//
-//    @Override
-//    public void addResourceHandlers(
-//            ResourceHandlerRegistry registry) {
-//
-////        registry.addResourceHandler("/static/**")
-////                .addResourceLocations("/WEB-INF/view/react/build/static/");
-////        registry.addResourceHandler("/*.js")
-////                .addResourceLocations("/WEB-INF/view/react/build/");
-////        registry.addResourceHandler("/*.json")
-////                .addResourceLocations("/WEB-INF/view/react/build/");
-////        registry.addResourceHandler("/*.ico")
-////                .addResourceLocations("/WEB-INF/view/react/build/");
-//        registry.addResourceHandler("/login.html")
-//                .addResourceLocations("/WEB-INF/view/react/build/index.html");
-//    }
-//
-//}
+package com.group24.easyHomes.security.config;
+
+import java.io.IOException;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
+
+@Configuration
+public class MvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath,
+                                                   Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        return requestedResource.exists() && requestedResource.isReadable() ? requestedResource
+                                : new ClassPathResource("/static/index.html");
+                    }
+                });
+    }
+}

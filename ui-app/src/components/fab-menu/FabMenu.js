@@ -13,6 +13,7 @@ import ServiceForm from '../service/ServiceForm';
 import { customTheme } from '../../utils/theme';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -29,7 +30,7 @@ export default function FabMenu() {
   const [succeeded, setSucceeded] = React.useState(false);
   const [toastContent, setToastContent] = React.useState('');
   const [toastMessage, setToastMessage] = React.useState(false);
-  
+  const [resetPropertyForm, setResetPropertyForm] = React.useState(false);
 
   const handleSnackClose = () =>
   {
@@ -69,6 +70,17 @@ export default function FabMenu() {
     }
   }
 
+  const showToastMessageForPostProperty = useSelector(state => state.app.showToastMessageForPostProperty, shallowEqual);
+
+  React.useEffect(() => {
+    if (showToastMessageForPostProperty) {
+      setDialogOpened(false);
+      setSucceeded(true);
+      setToastContent("Property added successfully!");
+      setResetPropertyForm(true);
+    }
+  }, [showToastMessageForPostProperty]);
+
   return (
     <ThemeProvider theme={fabMenuTheme}>
         <Snackbar open={succeeded} autoHideDuration={5000} onClose={handleSnackClose}>
@@ -84,6 +96,7 @@ export default function FabMenu() {
         setDialogOpenState={setDialogOpened}
         setToastMessage={setSucceeded}
         setToastContent={setToastContent}
+        resetPropertyForm={resetPropertyForm}
       />
       :
       <ServiceForm
