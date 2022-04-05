@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
 class ServiceAppointmentControllerTest {
 
     @Autowired
@@ -29,7 +28,7 @@ class ServiceAppointmentControllerTest {
 //
 //        mockMvc.perform(post("/service/contact")
 //                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"16\"," +
+//                .content("{\"user_id\":\"1\",\"service_id\":\"106\"," +
 //                        "\"service_user_id\":\"1\",\"message\":\"test\"," +
 //                        "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
 //                .accept("application/json"))
@@ -41,7 +40,7 @@ class ServiceAppointmentControllerTest {
 
         mockMvc.perform(post("/service/contact")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"1\"," +
+                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"106\"," +
                         "\"service_user_id\":\"100\",\"message\":\"test\"," +
                         "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
                 .accept("application/json"))
@@ -51,7 +50,7 @@ class ServiceAppointmentControllerTest {
 //    @Test
 //    void sendConfirmation() throws Exception {
 //
-//        mockMvc.perform(get("/servicecontact/confirm?serviceid=19&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
+//        mockMvc.perform(get("/servicecontact/confirm?serviceid=106&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept("application/json"))
 //                .andExpect(MockMvcResultMatchers.status().isAccepted());

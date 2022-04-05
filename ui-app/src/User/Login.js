@@ -160,7 +160,7 @@ const Login = (props) => {
               <Grid item xs>
                 {
                   <Link href="forgotpassword" variant="body2">
-                    Forgot password?
+                    {"Forgot password?"}
                   </Link>
                 }
               </Grid>
