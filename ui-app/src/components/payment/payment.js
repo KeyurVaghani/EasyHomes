@@ -3,7 +3,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { POST_PAYMENT } from "../../constants/Api";
+import { POST_PAYMENT, PAYMENT_CONFIRMATION_RECEIPT } from "../../constants/Api";
 
 export default function Payment(props) {
      const{ service, setToastMessage } = props;
@@ -68,6 +68,32 @@ export default function Payment(props) {
                 //handle error
                 console.log(response);
             });
+
+            const paymentDetailsForReceipt ={
+              "user_id":localStorage.getItem("userId"),
+              "amount":service?.cost,
+              "service_id":service?.service_id,
+              "dateTime": new Date().toLocaleString(),
+            };
+
+            axios
+            .post(PAYMENT_CONFIRMATION_RECEIPT, JSON.stringify(paymentDetailsForReceipt), {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              alert("Email sent.");
+            })
+            .catch(function (error) {
+              if (error.response) {
+                alert(error.response.data);
+              }
+            });
+    
+
         })
       };
     // handles payment errors

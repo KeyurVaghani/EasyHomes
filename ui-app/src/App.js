@@ -2,6 +2,13 @@ import React, { useState, lazy, Suspense, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Routes, Route, BrowserRouter as Router, Navigate, Outlet } from 'react-router-dom';
 
+import "./App.css";
+import NavBar from "./components/nav-bar/Navbar";
+import HomeTabs from "./components/home-tabs/HomeTabs";
+import FabMenu from "./components/fab-menu/FabMenu";
+import Login from "./User/Login";
+import Register from "./User/Register";
+import Forgotpassword from "./User/Forgotpassword";
 import Container from '@mui/material/Container';
 
 import Grid from '@mui/material/Grid';
@@ -13,13 +20,8 @@ import Collapse from '@mui/material/Collapse';
 import Slide from '@mui/material/Slide';
 import './App.css';
 import { updateUserLoggedInStatus } from './reducers/app/appSlice';
-import NavBar from './components/nav-bar/Navbar';
-import HomeTabs from './components/home-tabs/HomeTabs';
-import FabMenu from './components/fab-menu/FabMenu';
 
 import Welcome from './components/nav-bar/Welcome';
-import Login from './User/Login';
-import Register from './User/Register';
 import Drawer from './components/nav-bar/drawer/Drawer';
 import FilterMenu from './components/filter-menu/FilterMenu';
 // const NavBar = lazy(() => import('./components/nav-bar/Navbar'));
@@ -42,6 +44,7 @@ const isLogin = () => {
 
 const Public = () => <Login />;
 const PublicRegister = () => <Register />;
+const PublicForgotPassword = () => <Forgotpassword />;
 const Private = () => <Dashboard />;
 const PrivateChatRoom = () => <ChatRoomSection />;
 // const Login = () => <div>login</div>;
@@ -80,6 +83,11 @@ function useAuth() {
   return true;
 }
 
+
+function PublicForgotPasswordOutlet() {
+  const auth = isLogin();
+  return !auth ? <Outlet /> : <Navigate to="/forgotpassword" />;
+}
 
 function App() {
 
@@ -151,9 +159,13 @@ function App() {
       <Route path="login" element={<PublicOutlet />}>
         <Route path="" element={<Public />} />
       </Route>
-      <Route path="register" element={<PublicRegisterOutlet />}>
-        <Route path="" element={<PublicRegister />} />
-      </Route>
+        <Route path="register" element={<PublicRegisterOutlet />}>
+              <Route path="" element={<PublicRegister />} />
+       </Route>
+         <Route path="forgotpassword" element={<PublicForgotPasswordOutlet />}>
+               <Route path="" element={<PublicForgotPassword />} />
+             </Route>
+
       <Route path="" element={<Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
