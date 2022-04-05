@@ -102,8 +102,8 @@ export const RenderService = ({ service, handlePost }) => {
   
       const scheduleMeetingDetails = {
         user_id: localStorage.getItem("userId"),
-        service_id: service?.service_id,
-        service_user_id: service?.user_id,
+        service_id: service?.service_id.toString(),
+        service_user_id: service?.user_id.toString(),
         message: messageS,
         appointmentTime: dateandtimee,
       };

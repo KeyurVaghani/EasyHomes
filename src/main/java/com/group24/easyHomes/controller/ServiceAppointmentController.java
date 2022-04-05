@@ -39,7 +39,7 @@ public class ServiceAppointmentController {
         try{
             Services serviceDetails = serviceRepository.findByServices(Long.valueOf(scheduleMeetingDetails.get("service_id")));
             AppUser serviceOwner = appUserRepository.findByUserId(Long.valueOf((scheduleMeetingDetails.get("service_user_id"))));
-            AppUser interestedUser = appUserRepository.findByUserEmail(scheduleMeetingDetails.get("user_id"));
+            AppUser interestedUser = appUserRepository.findByUserId(Long.valueOf((scheduleMeetingDetails.get("user_id"))));
 
             String contentHTML = env.getProperty("email.meeting.body");
             String datetime = scheduleMeetingDetails.get("appointmentTime");

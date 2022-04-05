@@ -1,5 +1,5 @@
 export const URL = "https://easthomes-develop.herokuapp.com";
-//export const URL = 'http://localhost:8080';
+// export const URL = 'http://localhost:8080';
 export const GET_SERVICE = URL + '/service/services';
 export const POST_SERVICE = URL + '/service/services';
 export const POST_SERVICE_REVIEW = URL + '/serviceReview/add';
@@ -21,5 +21,8 @@ export const REST_USER = URL + "/rest/user/register";
 export const PAYMENT_CONFIRMATION_RECEIPT = URL + "/paymentreceipt/confirmation";
 export const FAVORITE_PROPERTY = URL + '/favorite-property/';
 export const FAVORITE_SERVICE = URL + '/favorite-service/';
+export const FORGOT_PASSWORD = URL + '/user/forgotpassword';
+export const OTP_VERIFICATION = URL + "/user/otpverification";
+export const NEW_PASSWORD = URL + "/user/newpassword";
 
 export const SOCKET_URL = URL + '/ws';

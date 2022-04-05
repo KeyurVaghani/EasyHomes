@@ -43,8 +43,8 @@ const Property = (props) => {
 
     const scheduleMeetingDetails = {
       user_id: localStorage.getItem("userId"),
-      property_id: property?.property_id,
-      property_user_id: property?.user_id,
+      property_id: property?.property_id.toString(),
+      property_user_id: property?.user_id.toString(),
       message: messageS,
       appointmentTime: dateandtimee,
     };
