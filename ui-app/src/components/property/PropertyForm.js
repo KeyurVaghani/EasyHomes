@@ -18,6 +18,8 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { POST_PROPERTY } from "../../constants/Api";
+import { useDispatch } from 'react-redux';
+import { postProperty } from '../../reducers/app/thunks/appThunk';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -25,7 +27,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 
 export default function SimpleDialog(props) {
-    const { open, title, setDialogOpenState, setToastMessage, setToastContent } = props;
+    const { open, title, setDialogOpenState, setToastMessage, setToastContent, resetPropertyForm } = props;
     const [propertyName, setPropertyName] = React.useState('');
     const [propertyType, setPropertyType] = React.useState('');
     const [bedrooms, setBedrooms] = React.useState('');
@@ -40,6 +42,7 @@ export default function SimpleDialog(props) {
     const [snackbar, setSnackBar] = React.useState(false);
     const [severity, setSeverity] = React.useState('success');
 
+    const dispatch = useDispatch();
     const images = [];
 
     const handleSnackClose = (event, reason) => {
@@ -95,6 +98,10 @@ export default function SimpleDialog(props) {
       laundry: true,
       wifi: false,
     });
+
+    React.useEffect(() => {
+      resetForm();
+    }, [resetPropertyForm]);
   
     const handleChange = (event) => {
       setState({
@@ -164,7 +171,7 @@ export default function SimpleDialog(props) {
     
 
       const submitPropertyPost = (initialValues) => {
-       const property ={
+       const property = {
          "user_id": localStorage.getItem("userId"),
           "property_name": propertyName,
           "address":{
@@ -173,38 +180,40 @@ export default function SimpleDialog(props) {
             "province":province,
             "country": country,
             "postal_code": postalCode
-        },
+          },
 
-        "amenities": "" + (laundry ? "Laundry" : "") + "," +(wifi ? "Wifi" : ""),
-        "property_type":propertyType,
-        "bathrooms": bathrooms,
-        "bedrooms": bedrooms,
-        "parking_included":parkingIncluded,
-        "rent": rent,
-        "images": [...base64Images]
-       };
-      JSON.stringify(property)
-
-      axios({
-        method: 'post',
-        url: POST_PROPERTY,
-        data: JSON.stringify(property),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-        })
-        .then(function (response) {
-            setSnackBar(true);
-            setSeverity("success");
-            setDialogOpenState(false);
-            resetForm();
-            setToastMessage(true);
-            setToastContent("Property added successfully!");
-            console.log(snackbar);
-        })
-        .catch(function (response) {
-            console.log(response);
-        });
+          "amenities": "" + (laundry ? "Laundry" : "") + "," +(wifi ? "Wifi" : ""),
+          "property_type":propertyType,
+          "bathrooms": bathrooms,
+          "bedrooms": bedrooms,
+          "parking_included":parkingIncluded,
+          "rent": rent,
+          "images": [...base64Images]
+        };
+      // JSON.stringify(property)
+        dispatch(postProperty({
+          property: property
+        }));
+      // axios({
+      //   method: 'post',
+      //   url: POST_PROPERTY,
+      //   data: JSON.stringify(property),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      //   })
+      //   .then(function (response) {
+      //       setSnackBar(true);
+      //       setSeverity("success");
+      //       setDialogOpenState(false);
+      //       resetForm();
+      //       setToastMessage(true);
+      //       setToastContent("Property added successfully!");
+      //       console.log(snackbar);
+      //   })
+      //   .catch(function (response) {
+      //       console.log(response);
+      //   });
       };
 
       const handleDialogClose = () => {
@@ -222,7 +231,17 @@ export default function SimpleDialog(props) {
         setCountry('');
         setPostalCode('');
         setbase64Images([]);
-      }       
+      }  
+
+      // if (resetPropertyForm) {
+      //   // check if the form is reset
+      //   if (!(propertyName === '' && propertyType === '' && bedrooms === '' 
+      //     && bathrooms === '' && rent === '' && propertyLocation === ''
+      //     && city === '' && province === '' && country === '' 
+      //     && postalCode === '' && base64Images.length === 0)) {
+      //     resetForm();
+      //   }
+      // }     
     return( <Dialog onBackdropClick={handleDialogClose} onClose={handleClose} open={open}>
         <DialogTitle>{title}</DialogTitle>
         <form>

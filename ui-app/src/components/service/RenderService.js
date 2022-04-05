@@ -6,6 +6,9 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import { FAVORITE_SERVICE } from "../../constants/Api";
 
+import ChatIcon from '@mui/icons-material/Chat';
+import { generatePath, useNavigate } from 'react-router';
+
 export const RenderService = ({ service, handlePost }) => {
     const blobData= service.images[0]?.image_data ;
     const [dialogOpened, setDialogOpened] = React.useState(false);
@@ -17,6 +20,14 @@ export const RenderService = ({ service, handlePost }) => {
     const [favS, setFavS]=useState(false);
     const [btnColor, setBtnColor] = useState("grey");
     const [favSId, setFavSId] = useState(0);
+
+    const navigate = useNavigate();
+    const navigateToChatRoom = (event, service) => {
+      if (event) {
+        event.preventDefault();
+      }
+      navigate('/chat-room', { state: { chatPeerInfo: service.user_name} });
+    }
 
     const InitFavState = () => {
         axios.get(FAVORITE_SERVICE + localStorage.getItem("userId"))
@@ -114,8 +125,10 @@ export const RenderService = ({ service, handlePost }) => {
             + service.province + ", " +  service.country} </Typography>
           </CardContent>
           <CardActions>
-          <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
+            <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
                         size="small">Learn More</Button>
+            <Button onClick={(e) => { navigateToChatRoom(e, service) }}
+              size="small">Chat</Button>
         </CardActions>
         </Card>
       </Grid>
