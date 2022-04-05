@@ -9,7 +9,7 @@ build:
   image: maven:latest
   script:
     - echo "Building the pipeline"
-    - mvn clean package -X
+    - mvn clean package -DskipTests
   artifacts:
     paths:
       - target
@@ -27,7 +27,7 @@ test:
 
   script:
     - echo "Pipeline test started"
-    - mvn verify -X
+    - mvn clean package -DskipTests
   tags:
     - ugrad
 
@@ -46,7 +46,7 @@ deploy_develop:
     - echo "backend application has been built"
   only:
     refs:
-      - develop
+      - master
 
 #deploy_develop:
 #  stage: deploy
