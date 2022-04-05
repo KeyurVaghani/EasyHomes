@@ -179,7 +179,6 @@ public class PropertyControllerTest {
     }
 
 
-    // use mock mvc to test filter properties with request body
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withRequestBody() throws Exception {
@@ -208,13 +207,9 @@ public class PropertyControllerTest {
 
     }
 
-    // use mock mvc to test filter properties with request body with bad request
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_ERROR_withRequestBody() throws Exception {
-
-
-
         List<Property> properties = new ArrayList<>();
         properties.add(Constants.property);
 
@@ -235,10 +230,8 @@ public class PropertyControllerTest {
                 .content(objectMapper.writeValueAsString(null));
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
-
     }
 
-    // use mock mvc to test filter properties with request body with empty request body object and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withEmptyRequestBody() throws Exception {
@@ -259,7 +252,6 @@ public class PropertyControllerTest {
     }
 
 
-    // use mock mvc to test filter properties with request body with all parameters as null and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withAllNullRequestBody() throws Exception {
@@ -268,15 +260,6 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-//        query.setProperty_name(null);
-//        query.setProperty_type(null);
-//        query.setNumberOfBathrooms(null);
-//        query.setNumberOfBedrooms(null);
-//        query.setParkingIncluded(null);
-//        query.setRent(null);
-//        query.setCity(null);
-//        query.setProvince(null);
-//        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -287,7 +270,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    // use mock mvc to test filter properties with request body with all parameters as empty string and null values then return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withAllEmptyRequestBody() throws Exception {
@@ -299,10 +281,6 @@ public class PropertyControllerTest {
         query.setProperty_name("");
         query.setProperty_type("");
         query.setAmenities("");
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
         query.setCity("");
         query.setProvince("");
         query.setCountry("");
@@ -316,7 +294,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    // use mock mvc to test filter properties with property_name as "test" and property_type as "House" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withPropertyNameAndPropertyType() throws Exception {
@@ -327,22 +304,6 @@ public class PropertyControllerTest {
         PropertyListQuery query = new PropertyListQuery();
         query.setProperty_name("test");
         query.setProperty_type("House");
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
-
-//        when(service.filterProperties(query)).thenReturn(properties);
-//        String content = new ObjectMapper().writeValueAsString(query);
-//        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(content);
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(1)));
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -353,7 +314,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    // use mock mvc to test filter properties with property_name as "test" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withPropertyName() throws Exception {
@@ -363,14 +323,6 @@ public class PropertyControllerTest {
 
         PropertyListQuery query = new PropertyListQuery();
         query.setProperty_name("test");
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -387,14 +339,6 @@ public class PropertyControllerTest {
     public void filterProperties_withPropertyName_noResults() throws Exception {
         PropertyListQuery query = new PropertyListQuery();
         query.setProperty_name("test");
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         List<Property> properties = new ArrayList<>();
 
@@ -408,7 +352,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with property_type as "House" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withPropertyType() throws Exception {
@@ -417,15 +360,7 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
         query.setProperty_type("House");
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -441,15 +376,7 @@ public class PropertyControllerTest {
     public void filterProperties_SUCCESS_withPropertyType_noResults() throws Exception {
         List<Property> properties = new ArrayList<>();
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
         query.setProperty_type("House");
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -460,7 +387,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with number of bedrooms as 2 and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withNumberOfBedrooms() throws Exception {
@@ -469,17 +395,8 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
         query.setNumberOfBedrooms(2);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
-//        when(service.filterProperties(query)).thenReturn(properties);
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -496,15 +413,7 @@ public class PropertyControllerTest {
         List<Property> properties = new ArrayList<>();
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
         query.setNumberOfBedrooms(2);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -516,7 +425,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with number of bathrooms as 2 and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withNumberOfBathrooms() throws Exception {
@@ -525,15 +433,7 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
         query.setNumberOfBathrooms(2);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -550,15 +450,7 @@ public class PropertyControllerTest {
     public void filterProperties_SUCCESS_withNumberOfBathrooms_noResults() throws Exception {
         List<Property> properties = new ArrayList<>();
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
         query.setNumberOfBathrooms(2);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -570,7 +462,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with parking included as true and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withParkingIncluded() throws Exception {
@@ -579,17 +470,8 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
         query.setParkingIncluded(true);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
-//        when(service.filterProperties(query)).thenReturn(properties);
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -605,15 +487,7 @@ public class PropertyControllerTest {
     public void filterProperties_withPropertyWithParkingNotIncluded_noResult() throws Exception {
         List<Property> properties = new ArrayList<>();
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
         query.setParkingIncluded(true);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -625,21 +499,12 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with rent as 1000 and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_withPropertyWithRent_noResult() throws Exception {
         List<Property> properties = new ArrayList<>();
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
         query.setRent(1000.0);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -651,7 +516,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // use mock mvc to test filter properties with city as "Halifax" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withCity() throws Exception {
@@ -660,17 +524,8 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
         query.setCity("Halifax");
-        query.setProvince(null);
-        query.setCountry(null);
 
-//        when(service.filterProperties(query)).thenReturn(properties);
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -686,15 +541,7 @@ public class PropertyControllerTest {
     public void filterProperties_SUCCESS_withCity_noResult() throws Exception {
         List<Property> properties = new ArrayList<>();
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
         query.setCity("Halifax");
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -707,7 +554,6 @@ public class PropertyControllerTest {
     }
 
 
-    // use mock mvc to test filter properties with province as "NS" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withProvince() throws Exception {
@@ -716,17 +562,8 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
         query.setProvince("NS");
-        query.setCountry(null);
 
-//        when(service.filterProperties(query)).thenReturn(properties);
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -743,15 +580,7 @@ public class PropertyControllerTest {
         List<Property> properties = new ArrayList<>();
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
         query.setProvince("NS");
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -764,7 +593,6 @@ public class PropertyControllerTest {
     }
 
 
-    // use mock mvc to test filter properties with country as "Canada" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withCountry() throws Exception {
@@ -773,17 +601,8 @@ public class PropertyControllerTest {
         properties.add(Constants.property);
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
         query.setCountry("Canada");
 
-//        when(service.filterProperties(query)).thenReturn(properties);
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/property/properties/filter")
@@ -800,14 +619,6 @@ public class PropertyControllerTest {
         List<Property> properties = new ArrayList<>();
 
         PropertyListQuery query = new PropertyListQuery();
-        query.setProperty_name(null);
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
         query.setCountry("Canada");
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
@@ -821,7 +632,6 @@ public class PropertyControllerTest {
     }
 
 
-    // use mock mvc to test filter properties with property_name and amneties as "test" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withPropertyNameAndAmneties() throws Exception {
@@ -832,14 +642,6 @@ public class PropertyControllerTest {
         PropertyListQuery query = new PropertyListQuery();
         query.setProperty_name("test");
         query.setAmenities("Wifi");
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -851,7 +653,6 @@ public class PropertyControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    // use mock mvc to test filter properties with property_name and amneties as "test" and "Wifi" and return all properties
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
     public void filterProperties_SUCCESS_withPropertyNameAndAmneties_noResult() throws Exception {
@@ -861,14 +662,6 @@ public class PropertyControllerTest {
         PropertyListQuery query = new PropertyListQuery();
         query.setProperty_name("test");
         query.setAmenities("Wifi");
-        query.setProperty_type(null);
-        query.setNumberOfBathrooms(null);
-        query.setNumberOfBedrooms(null);
-        query.setParkingIncluded(null);
-        query.setRent(null);
-        query.setCity(null);
-        query.setProvince(null);
-        query.setCountry(null);
 
         doReturn(properties).when(service).filterProperties(any(PropertyListQuery.class));
         String content = new ObjectMapper().writeValueAsString(query);
@@ -879,10 +672,6 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
-
-
-
-
 
 }
 

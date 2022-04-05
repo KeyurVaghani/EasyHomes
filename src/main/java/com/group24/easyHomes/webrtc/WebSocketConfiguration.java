@@ -12,10 +12,6 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
-//    @Override
-//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//        registry.addHandler(new SocketHandler(), "/videochat").setAllowedOrigins("*");
-//    }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {

@@ -65,6 +65,10 @@ public class PropertyService {
                     predicates.add(cb.equal(root.get("bathrooms"), searchCriteria.getNumberOfBathrooms()));
                 }
 
+                if (searchCriteria.getRent() != null) {
+                    predicates.add(cb.equal(root.get("rent"), searchCriteria.getRent()));
+                }
+
                 if (searchCriteria.getParkingIncluded() != null) {
                     predicates.add(cb.equal(root.get("parking_included"), searchCriteria.getParkingIncluded()));
                 }
