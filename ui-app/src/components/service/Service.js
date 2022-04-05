@@ -1,4 +1,3 @@
-import React from "react";
 import {Button, Rating, Dialog, Typography, Container } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import { openModel } from '../../reducers/app/appSlice';
@@ -8,13 +7,18 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import ServiceReviewForm from "./ServiceReviewForm";
 
+import "bootstrap";
+import React, { useState } from "react";
+
+
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const Service = (props) => {
 
-  const { open, setDialogOpenState,service } = props;
+  const { open, service, setDialogOpenState } = props;
   const [launchPayPal, setLaunchPayPal ] = React.useState(false);
   const [succeeded, setSucceeded] = React.useState(false);
   const [toastContent, setToastContent] = React.useState('');
@@ -26,13 +30,24 @@ const Service = (props) => {
   }
 
   const handleDialogClose = () => {
+    
     setLaunchPayPal(false);
     dispatch(openModel({ homeDialog:{isOpen:false,service:null} }))
   }
 
   const handleClose = () => {
+    console.log("Test close.");
     setDialogOpenState();
    };
+   
+  //    const isOpen = useSelector((state) => state.app.homeDialog.isOpen);
+  // const service = useSelector((state) => state.app.homeDialog.service);
+
+
+
+  console.log()
+  
+
 
   return (
     <Dialog fullWidth maxWidth='md' onBackdropClick={handleDialogClose} onClose={handleClose} open={open}>
@@ -66,9 +81,8 @@ const Service = (props) => {
             marginBottom:'1.5%  '
           }
         }>
-          <Button variant="contained">
-            Schedule Meeting
-          </Button>
+          
+          
           <Button variant="contained" onClick ={() => {setLaunchPayPal(true)}} >
             Buy Service
           </Button>

@@ -18,6 +18,8 @@ public class Constants {
     public static final Long serviceID = 1L;
     public static final int favoritePropertyID = 1;
     public static final Long favoritePropertyPrimaryID = 1L;
+    public static final int favoriteServiceID = 1;
+    public static final Long favoriteServicePrimaryID = 1L;
     public static final Long markedAsFavoriteByUserID = 1L;
     public static final long reviewForServiceID = 16L;
     public static final long reviewGivenByUserID = 1L;

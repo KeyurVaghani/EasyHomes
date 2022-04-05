@@ -55,7 +55,4 @@ public class PaymentControllerIntegrationTest {
         mockMvc.perform(request).andExpect(status().isCreated());
     }
 
-
-
-
 }
