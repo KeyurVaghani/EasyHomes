@@ -48,21 +48,21 @@ class ServiceAppointmentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
-    @Test
-    void sendConfirmation() throws Exception {
-
-        mockMvc.perform(get("/servicecontact/confirm?serviceid=19&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isAccepted());
-    }
-
 //    @Test
-//    void sendConfirmationFail() throws Exception {
+//    void sendConfirmation() throws Exception {
 //
-//        mockMvc.perform(get("/servicecontact/confirm?serviceid=&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
+//        mockMvc.perform(get("/servicecontact/confirm?serviceid=19&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isConflict());
+//                .andExpect(MockMvcResultMatchers.status().isAccepted());
 //    }
+
+    @Test
+    void sendConfirmationFail() throws Exception {
+
+        mockMvc.perform(get("/servicecontact/confirm?serviceid=&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isConflict());
+    }
 }
