@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
+import { REGISTER_USER } from "../constants/Api";
 
 function Copyright(props) {
   return (
@@ -72,7 +73,7 @@ const Register = (props) => {
 
     axios
       .post(
-        "http://localhost:8080/user/register",
+        REGISTER_USER,
         {
           firstName: user.firstName,
           lastName: user.lastName,

@@ -24,17 +24,17 @@ class ServiceAppointmentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @Test
-//    void bookAppointment() throws Exception {
-//
-//        mockMvc.perform(post("/service/contact")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"16\"," +
-//                        "\"service_user_id\":\"1\",\"message\":\"test\"," +
-//                        "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
-//                .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isAccepted());
-//    }
+    @Test
+    void bookAppointment() throws Exception {
+
+        mockMvc.perform(post("/service/contact")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"user_id\":\"iamdv43@gmail.com\",\"service_id\":\"16\"," +
+                        "\"service_user_id\":\"1\",\"message\":\"test\"," +
+                        "\"appointmentTime\":\"22/12/2022T01:02:00\"}")
+                .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isAccepted());
+    }
 
     @Test
     void scheduleMeetingFail() throws Exception {
@@ -48,14 +48,14 @@ class ServiceAppointmentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
-//    @Test
-//    void sendConfirmation() throws Exception {
-//
-//        mockMvc.perform(get("/servicecontact/confirm?serviceid=19&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isAccepted());
-//    }
+    @Test
+    void sendConfirmation() throws Exception {
+
+        mockMvc.perform(get("/servicecontact/confirm?serviceid=19&date=22/12/2022T01:02:00&useremail=iamdv43@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isAccepted());
+    }
 
     @Test
     void sendConfirmationFail() throws Exception {

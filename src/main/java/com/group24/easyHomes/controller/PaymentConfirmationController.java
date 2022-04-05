@@ -39,7 +39,7 @@ public class PaymentConfirmationController {
     public ResponseEntity<String> paymentReceipt(@RequestBody Map<String, String> paymentDetails) throws ParseException {
 
         Services service = serviceRepository.findByServices(Long.valueOf(paymentDetails.get("service_id")));
-        AppUser customer = appUserRepository.findByUserEmail(paymentDetails.get("user_id"));
+        AppUser customer = appUserRepository.findByUserId(Long.valueOf(paymentDetails.get("user_id")));
         AppUser provider = appUserRepository.findByUserId(service.getUser_id());
 
         String emailBody = env.getProperty("email.payment.body");

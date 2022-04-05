@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+@RequestMapping("/user")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 public class ForgotController{
 
