@@ -21,3 +21,5 @@ export const REST_USER = URL + "/rest/user/register";
 export const PAYMENT_CONFIRMATION_RECEIPT = URL + "/paymentreceipt/confirmation";
 export const FAVORITE_PROPERTY = URL + '/favorite-property/';
 export const FAVORITE_SERVICE = URL + '/favorite-service/';
+
+export const SOCKET_URL = URL + '/ws';

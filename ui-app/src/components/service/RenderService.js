@@ -12,6 +12,9 @@ import { TextField } from "@mui/material";
 import DateTimePicker from "react-datetime-picker";
 import {Dialog } from "@mui/material";
 
+import ChatIcon from '@mui/icons-material/Chat';
+import { generatePath, useNavigate } from 'react-router';
+
 export const RenderService = ({ service, handlePost }) => {
 
 
@@ -25,6 +28,14 @@ export const RenderService = ({ service, handlePost }) => {
     const [favS, setFavS]=useState(false);
     const [btnColor, setBtnColor] = useState("grey");
     const [favSId, setFavSId] = useState(0);
+
+    const navigate = useNavigate();
+    const navigateToChatRoom = (event, service) => {
+      if (event) {
+        event.preventDefault();
+      }
+      navigate('/chat-room', { state: { chatPeerInfo: service.user_name} });
+    }
 
     const InitFavState = () => {
         axios.get(FAVORITE_SERVICE + localStorage.getItem("userId"))
@@ -169,7 +180,7 @@ export const RenderService = ({ service, handlePost }) => {
             + service.province + ", " +  service.country} </Typography>
           </CardContent>
           <CardActions>
-          <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
+            <Button style={{borderRadius:'20px'}} variant='contained' onClick={()=>{setDialogOpened(true)}}
                         size="small">Learn More</Button>
 
 <Button variant="contained"
@@ -239,6 +250,8 @@ export const RenderService = ({ service, handlePost }) => {
                 }
               />
             )}
+            <Button onClick={(e) => { navigateToChatRoom(e, service) }}
+              size="small">Chat</Button>
         </CardActions>
         </Card>
       </Grid>
