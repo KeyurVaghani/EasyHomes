@@ -1,8 +1,8 @@
 package com.group24.easyHomes.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group24.easyHomes.model.FavoriteService;
-import com.group24.easyHomes.repository.FavoriteServiceRepository;
+import com.group24.easyHomes.model.FavoriteProperty;
+import com.group24.easyHomes.repository.FavoritePropertyRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -32,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FavouriteServiceIntegrationTest {
+@ActiveProfiles("test")
+public class FavouritePropertyControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
@@ -47,38 +49,38 @@ public class FavouriteServiceIntegrationTest {
     }
 
     @MockBean
-    private FavoriteServiceRepository favoriteServiceRepository;
+    private FavoritePropertyRepository favoritePropertyRepository;
 
-    FavoriteService favoriteService = new FavoriteService(Constants.markedAsFavoriteByUserID,Constants.favoriteServiceID);
+    FavoriteProperty favoriteProperty = new FavoriteProperty(Constants.markedAsFavoriteByUserID,Constants.favoritePropertyID);
 
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
-    public void newFavoriteService() throws Exception {
-        MockHttpServletRequestBuilder request = post("/favorite-service/add");
-        request= request.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(favoriteService));
+    public void newFavoriteProperty() throws Exception {
+        MockHttpServletRequestBuilder request = post("/favorite-property/add");
+        request= request.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(favoriteProperty));
         mockMvc.perform(request).andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
-    public void getFavoriteServices() throws Exception {
-        MockHttpServletRequestBuilder request = get("/favorite-service/{userId}",Constants.markedAsFavoriteByUserID);
+    public void getFavoriteProperties() throws Exception {
+        MockHttpServletRequestBuilder request = get("/favorite-property/{userId}",Constants.markedAsFavoriteByUserID);
         request= request.contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
-    public void deleteFavoriteService() throws Exception {
-        MockHttpServletRequestBuilder request = delete("/favorite-service/delete/{favoriteServicePrimaryId}",Constants.favoriteServicePrimaryID);
+    public void deleteFavoriteProperty() throws Exception {
+        MockHttpServletRequestBuilder request = delete("/favorite-property/delete/{favoritePropertyPrimaryId}",Constants.favoritePropertyPrimaryID);
         mockMvc.perform(request).andExpect(status().isOk());
     }
 
 
     @Test
     @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
-    public void getAllFavoriteServices() throws Exception {
-        mockMvc.perform(get("/favorite-service/favorites"))
+    public void getAllFavoriteProperties() throws Exception {
+        mockMvc.perform(get("/favorite-property/favorites"))
                 .andExpect(status().isOk());
     }
 }
