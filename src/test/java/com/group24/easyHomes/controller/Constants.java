@@ -1,5 +1,10 @@
 package com.group24.easyHomes.controller;
 
+import com.group24.easyHomes.model.Property;
+import com.group24.easyHomes.model.PropertyAddress;
+import com.group24.easyHomes.model.PropertyListQuery;
+import com.group24.easyHomes.model.Services;
+
 public class Constants {
 
     public static final int propertyID = 10;
@@ -24,4 +29,24 @@ public class Constants {
 
 
 
+    public static final PropertyAddress address = new PropertyAddress("University Street",
+            "Halifax",
+            "Canada",
+            "H2Y8IK", "NS");
+
+    public static final Property property = new Property("test", address, "Wifi", "House", true, 500.0, 2, 2, 1);
+
+    public static final Services services = new Services(
+            "Tiffin",
+            "Food Delivery",
+            199,
+            "monthly",
+            "Test description",
+            "Halifax",
+            "NS",
+            "Canada",
+            "H2Y8IK",
+            "1234",
+            2L
+    );
 }

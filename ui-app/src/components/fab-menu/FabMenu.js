@@ -7,6 +7,7 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { ThemeProvider } from '@mui/material/styles';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux'; 
 
 import SimpleDialog from '../property/PropertyForm';
 import ServiceForm from '../service/ServiceForm';
@@ -30,6 +31,8 @@ export default function FabMenu() {
   const [succeeded, setSucceeded] = React.useState(false);
   const [toastContent, setToastContent] = React.useState('');
   const [toastMessage, setToastMessage] = React.useState(false);
+  
+  const [resetServiceForm, setResetServiceForm] = React.useState(false);
   const [resetPropertyForm, setResetPropertyForm] = React.useState(false);
 
   const handleSnackClose = () =>
@@ -70,6 +73,17 @@ export default function FabMenu() {
     }
   }
 
+  const showToastMessageForPostService = useSelector(state => state.app.showToastMessageForPostService, shallowEqual);
+
+  React.useEffect(() => {
+    if (showToastMessageForPostService) {
+      setDialogOpened(false);
+      setSucceeded(true);
+      setToastContent("Service added successfully!");
+      setResetServiceForm(true);
+    }
+  }, [showToastMessageForPostService]);
+
   const showToastMessageForPostProperty = useSelector(state => state.app.showToastMessageForPostProperty, shallowEqual);
 
   React.useEffect(() => {
@@ -106,6 +120,7 @@ export default function FabMenu() {
         setDialogOpenState={setDialogOpened}
         setToastMessage={setSucceeded}
         setToastContent={setToastContent}
+        resetServiceForm={resetServiceForm}
       />
       
       }

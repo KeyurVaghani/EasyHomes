@@ -10,9 +10,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';  
 import axios from 'axios';
 import { POST_SERVICE } from "../../constants/Api";
+import { useDispatch } from 'react-redux';
+import { postService } from '../../reducers/app/thunks/appThunk';
 
   export default function ServiceForm(props) {
-    const { open, title, setDialogOpenState, setToastMessage, setToastContent} = props;
+    const { open, title, setDialogOpenState, setToastMessage, setToastContent, resetServiceForm} = props;
     const [serviceName, setServiceName] = React.useState('');
     const [serviceType, setServiceType] = React.useState('');
     const [cost, setCost] = React.useState(0);
@@ -26,6 +28,8 @@ import { POST_SERVICE } from "../../constants/Api";
     const [base64Images,setbase64Images] =  React.useState([]);
     const [snackbar, setSnackBar] = React.useState(false);
     const [severity, setSeverity] = React.useState('success');
+
+    const dispatch = useDispatch();
 
     const images = [];
 
@@ -62,6 +66,10 @@ import { POST_SERVICE } from "../../constants/Api";
         }       
       };
 
+      React.useEffect(() => {
+        resetForm();
+      }, [resetServiceForm]);  
+
       const submitServicePost = (initialValues) => {
         const postData = {
           "user_id": localStorage.getItem("userId"),
@@ -79,24 +87,29 @@ import { POST_SERVICE } from "../../constants/Api";
           'images':[...base64Images]
         }
 
-      axios({
-        method: 'post',
-        url: POST_SERVICE,
-        data: JSON.stringify(postData),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-        })
-        .then(function (response) {
-            setSnackBar(true);
-            setSeverity("success");
-            setDialogOpenState(false);
-            resetForm();
-            setToastMessage(true);
-            setToastContent("Service added successfully!");
-        })
-        .catch(function (response) {
-        });
+        dispatch(postService({
+          service: postData
+        }));
+
+
+      // axios({
+      //   method: 'post',
+      //   url: POST_SERVICE,
+      //   data: JSON.stringify(postData),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      //   })
+      //   .then(function (response) {
+      //       setSnackBar(true);
+      //       setSeverity("success");
+      //       setDialogOpenState(false);
+      //       resetForm();
+      //       setToastMessage(true);
+      //       setToastContent("Service added successfully!");
+      //   })
+      //   .catch(function (response) {
+      //   });
       };
 
       const resetForm = () => {

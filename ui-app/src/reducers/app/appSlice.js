@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authenticateUserData, filterProperties, 
-    filterServices, getProperties, getServices, postProperty } from './thunks/appThunk';
+    filterServices, getProperties, getServices, postProperty,postService } from './thunks/appThunk';
 
 const initialState = {
     isUserLoggedIn: false,
@@ -17,6 +17,7 @@ const initialState = {
     services: [],
     homePagePropertiesLoading: false,
     homePageServicesLoading: false,
+    showToastMessageForPostService: false,
     showToastMessageForPostProperty: false
 }
 
@@ -124,6 +125,20 @@ export const appSlice = createSlice({
             state.homePageServicesLoading = false;
         });
 
+        builder.addCase(postService.pending, (state) => {
+            console.log('pending', state);
+            state.showToastMessageForPostService = true;
+        });
+        builder.addCase(postService.fulfilled, (state, action) => {
+            console.log('fulfilled: ', action);
+            state.services = [...state.services, { ...action.payload }];
+            state.showToastMessageForPostService = false;
+        });
+        builder.addCase(postService.rejected, (state, { payload }) => {
+            console.log('rejected: ', payload);
+            console.log('rejected');
+            state.showToastMessageForPostService = false;
+        });
         // add builder for post property
         builder.addCase(postProperty.pending, (state) => {
             console.log('pending', state);

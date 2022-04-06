@@ -165,7 +165,7 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
@@ -277,11 +277,11 @@ export default function ElevateAppBar(props) {
                     inputProps={{ "aria-label": "search" }}
                     onChange={(e) => { 
                       if (currentTab === 0) {
-                        if (e.target.value.length > 2) {
+                        if (e.target.value.length == 0 || e.target.value.length > 2) {
                           dispatch(filterProperties({filterParams: {property_name: e.target.value}}));
                         }
                       } else {
-                        if (e.target.value.length > 2) {
+                        if (e.target.value.length == 0 || e.target.value.length > 2) {
                           dispatch(filterServices({filterParams: {service_name: e.target.value}}));
                         }
                       }
