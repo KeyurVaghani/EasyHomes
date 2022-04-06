@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import ChatIcon from '@mui/icons-material/Chat';
 
 import { customTheme } from '../../utils/theme';
 import { logoutUser } from '../../reducers/app/appSlice';
@@ -26,6 +27,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 import { filterProperties, filterServices } from '../../reducers/app/thunks/appThunk';
+
+import {useState} from "react";
+import FavList from "../favoritesList/FavList"
+import {Modal} from "@mui/material";
+
 function ElevationScroll(props) {
   const { children } = props;
 
@@ -135,6 +141,12 @@ export default function ElevateAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const navigateToChatRoom = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    navigate('/chat-room');
+  };
+
   const menuId = "primary-search-account-menu";
   // const filterMenuId = "primary-search-account-menu";
   const renderMenu = (
@@ -153,7 +165,7 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
@@ -175,6 +187,14 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <IconButton onClick={(e) => { navigateToChatRoom(e) }} size="large" aria-label={`show chats`} color="inherit">
+          <Badge color="error">
+            <ChatIcon />
+          </Badge>
+        </IconButton>
+        <p>chats</p>
+      </MenuItem>
       <MenuItem>
         <IconButton size="large" aria-label={`show ${messagesCount} new messages`} color="inherit">
           <Badge badgeContent={messagesCount} color="error">
@@ -209,6 +229,29 @@ export default function ElevateAppBar(props) {
       </MenuItem>
     </Menu>
   );
+
+  const [openFavList, setOpenFavList] = useState(false);
+  const handleOpen = () => setOpenFavList(true);
+  const handleClose = () => setOpenFavList(false);
+  const favListStyle = {
+    position: 'absolute',
+    top: '5%',
+    left: '28%',
+    width: '44%',
+    borderRadius: '10px',
+    bgcolor: 'background.paper',
+    border: '2px solid dimgray',
+    boxShadow: 24,
+    p: 4,
+  };
+
+
+  const handleTitleClick = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    navigate('/dashboard');
+  }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -221,7 +264,8 @@ export default function ElevateAppBar(props) {
                   variant="h6"
                   noWrap
                   component="div"
-                  sx={{ display: { xs: "none", sm: "block" } }}>
+                  onClick={(e) => handleTitleClick(e)}
+                  sx={{ display: { xs: "none", sm: "block", cursor: 'pointer' } }}>
                   {title}
                 </Typography>
                 <Search>
@@ -233,11 +277,11 @@ export default function ElevateAppBar(props) {
                     inputProps={{ "aria-label": "search" }}
                     onChange={(e) => { 
                       if (currentTab === 0) {
-                        if (e.target.value.length > 2) {
+                        if (e.target.value.length == 0 || e.target.value.length > 2) {
                           dispatch(filterProperties({filterParams: {property_name: e.target.value}}));
                         }
                       } else {
-                        if (e.target.value.length > 2) {
+                        if (e.target.value.length == 0 || e.target.value.length > 2) {
                           dispatch(filterServices({filterParams: {service_name: e.target.value}}));
                         }
                       }
@@ -246,6 +290,12 @@ export default function ElevateAppBar(props) {
                 </Search>
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                  <IconButton onClick={(e) => { navigateToChatRoom(e) }} size="large" aria-label={`show chats`} color="inherit">
+                    <Badge color="error">
+                      <ChatIcon />
+                    </Badge>
+                  </IconButton>
+
                   <IconButton
                     size="large"
                     aria-label={`show ${messagesCount} new messages`}
@@ -258,11 +308,17 @@ export default function ElevateAppBar(props) {
                   <IconButton
                     size="large"
                     aria-label={`show ${favouritesCount} favourites`}
-                    color="inherit">
+                    color="inherit"
+                    onClick={handleOpen}>
                     <Badge badgeContent={favouritesCount} color="error">
                       <StarOutlineIcon />
                     </Badge>
                   </IconButton>
+                  <Modal open={openFavList} onClose={handleClose} sx={{overflow:"auto"}}>
+                    <Box sx={favListStyle}>
+                      <FavList />
+                    </Box>
+                  </Modal>
                   <IconButton
                     size="large"
                     edge="end"

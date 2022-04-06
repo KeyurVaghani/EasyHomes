@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { authenticateUserData, filterProperties, filterServices, getProperties, getServices, postService } from './thunks/appThunk';
+import { authenticateUserData, filterProperties, 
+    filterServices, getProperties, getServices, postProperty,postService } from './thunks/appThunk';
 
 const initialState = {
     isUserLoggedIn: false,
@@ -17,6 +18,7 @@ const initialState = {
     homePagePropertiesLoading: false,
     homePageServicesLoading: false,
     showToastMessageForPostService: false,
+    showToastMessageForPostProperty: false
 }
 
 export const appSlice = createSlice({
@@ -55,6 +57,7 @@ export const appSlice = createSlice({
                 state.token = payload.token;
                 localStorage.setItem('token', payload.token);
                 localStorage.setItem('userId', payload.userId);
+                localStorage.setItem('username', payload.username);
             }
         });
         builder.addCase(authenticateUserData.rejected, (state, { payload }) => {
@@ -136,6 +139,22 @@ export const appSlice = createSlice({
             console.log('rejected');
             state.showToastMessageForPostService = false;
         });
+        // add builder for post property
+        builder.addCase(postProperty.pending, (state) => {
+            console.log('pending', state);
+            state.showToastMessageForPostProperty = true;
+        });
+        builder.addCase(postProperty.fulfilled, (state, action) => {
+            console.log('fulfilled: ', action);
+            state.properties = [...state.properties, { ...action.payload }];
+            state.showToastMessageForPostProperty = false;
+        });
+        builder.addCase(postProperty.rejected, (state, { payload }) => {
+            console.log('rejected: ', payload);
+            console.log('rejected');
+            state.showToastMessageForPostProperty = false;
+        });
+
     },
 });
 

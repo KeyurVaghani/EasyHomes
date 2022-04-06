@@ -1,12 +1,12 @@
 package com.group24.easyHomes.resource.impl;
 
+import com.group24.easyHomes.dto.AppUserResourceDTO;
 import com.group24.easyHomes.model.AppUser;
 import com.group24.easyHomes.repository.AppUserRepository;
 import com.group24.easyHomes.repository.AppUserRoleRepository;
 import com.group24.easyHomes.security.config.JwtTokenProvider;
 import com.group24.easyHomes.service.AppUserService;
 import com.group24.easyHomes.service.SendMailService;
-import com.group24.easyHomes.service.TokenValidationService;
 import com.group24.easyHomes.utils.ConstantUtils;
 import lombok.AllArgsConstructor;
 import org.codehaus.jettison.json.JSONException;
@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -36,22 +34,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserResourceImpl {
 
     private final AppUserService appUserService;
-    private final TokenValidationService tokenValidationService;
     private final SendMailService sendMailService;
 
-    private static Logger log = LoggerFactory.getLogger(AppUserResourceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AppUserResourceImpl.class);
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenProvider tokenProvider;
+    private final JwtTokenProvider tokenProvider;
 
     @Autowired
-    private AppUserRoleRepository roleRepository;
+    private final AppUserRoleRepository roleRepository;
 
     @Autowired
-    private AppUserRepository userRepository;
+    private final AppUserRepository userRepository;
+
+    @Autowired
+    private final AppUserResourceDTO appUserResourceDTO;
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@RequestBody AppUser user) {
@@ -60,27 +60,37 @@ public class AppUserResourceImpl {
         try {
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             user.setRole(roleRepository.findByName(ConstantUtils.USER.toString()));
-            AppUser savedUser = userRepository.saveAndFlush(user);
 
-            String token =  appUserService.signUpUser(savedUser);
+            if(userRepository.findByEmail(user.getEmail()).isEmpty()){
+                AppUser savedUser = userRepository.saveAndFlush(user);
 
-            String link = "https://easthomes-develop.herokuapp.com/user/confirm?token=" + token;
+                String token =  appUserService.signUpUser(savedUser);
 
-            String message = "Hello,\n" +
-                    "Please verify your email id through following link:\n" +
-                    "Link: " +  link + " \n" +
-                    "Thank you\n" +
-                    "EasyHomes";
-            sendMailService.send(savedUser.getEmail(), message);
-            jsonObject.put("message", savedUser.getFirstName() + " saved succesfully");
-            return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+                String link = appUserResourceDTO.link + token;
+
+                String message = appUserResourceDTO.message + link;
+
+                String subject = appUserResourceDTO.subject;
+
+                sendMailService.send(savedUser.getEmail(), message,subject );
+                jsonObject.put("message", savedUser.getFirstName() + " saved successfully");
+                return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+            }
+            else{
+                jsonObject.put("message", "Email is already exists.");
+                return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+            }
+
+// ----------------------------------------------------
+//            String link = "https://easthomes-develop.herokuapp.com/user/confirm?token=" + token;
+// ----------------------------------------------------
         } catch (JSONException e) {
             try {
                 jsonObject.put("exception", e.getMessage());
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
-            return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -93,9 +103,12 @@ public class AppUserResourceImpl {
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
             if (authentication.isAuthenticated()) {
                 String email = user.getEmail();
+                Long userId = userRepository.findByEmail(email).get().getId();
+                String firstName = userRepository.findById(userId).get().getFirstName();
                 jsonObject.put("name", authentication.getName());
                 jsonObject.put("authorities", authentication.getAuthorities());
-                 jsonObject.put("userId", userRepository.findByEmail(email).get().getId());
+                 jsonObject.put("userId", userId);
+                 jsonObject.put("username", firstName);
                 jsonObject.put("token", tokenProvider.createToken(email, userRepository.findByEmail(email).get().getRole()));
                 return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
             }
@@ -105,7 +118,7 @@ public class AppUserResourceImpl {
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
-            return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(appUserResourceDTO.loginErrorMessage, HttpStatus.FORBIDDEN);
         }
         return null;
     }

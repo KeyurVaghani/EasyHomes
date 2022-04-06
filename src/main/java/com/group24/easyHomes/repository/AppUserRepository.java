@@ -15,10 +15,22 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
 
+
+    @Query("SELECT t FROM AppUser t WHERE t.email = ?1")
+    AppUser findByUserEmail(String email);
+
+    @Query("SELECT t FROM AppUser t WHERE t.id = ?1")
+    AppUser findByUserId(Long id);
+
     @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +
             "SET a.enabled = TRUE WHERE a.email = ?1")
     int enableAppUser(String email);
+
+    @Transactional
+    @Modifying
+    @Query(" update AppUser user set user.password=?2 where user.email=?1")
+    int setNewPassword(String email, String password);
 
 }

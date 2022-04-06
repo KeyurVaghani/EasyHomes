@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 @Setter
@@ -21,15 +19,6 @@ import java.util.Collections;
 public class AppUser implements UserDetails {
 
     @Id
-//    @SequenceGenerator(
-//            name = "user_sequence",
-//            sequenceName = "user_sequence",
-//            allocationSize = 1
-//    )
-//    @GeneratedValue(
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "user_sequence"
-//    )
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
@@ -37,8 +26,7 @@ public class AppUser implements UserDetails {
     private String password;
     private String email;
 
-//    @Enumerated(EnumType.STRING)
-//    private AppUserRole role;
+
     private Boolean locked = false;
     private Boolean enabled = false;
 
@@ -50,19 +38,12 @@ public class AppUser implements UserDetails {
                    String lastName,
                    String password,
                    String email
-//                   AppUserRole appUserRole
                    ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-//        this.appUserRole = appUserRole;
     }
-
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
-//        return Collections.singletonList(authority);
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
