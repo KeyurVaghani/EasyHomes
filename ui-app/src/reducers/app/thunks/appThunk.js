@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { AUTH_USER, FILTER_PROPERTY, FILTER_SERVICE, GET_PROPERTY, GET_SERVICE, POST_PROPERTY } from '../../../constants/Api';
+import { AUTH_USER, FILTER_PROPERTY, FILTER_SERVICE, GET_PROPERTY, GET_SERVICE, POST_PROPERTY,POST_SERVICE } from '../../../constants/Api';
 export const authenticateUserData = createAsyncThunk(
   'app/login',
   async (payload) => {
@@ -78,6 +78,32 @@ export const getServices = createAsyncThunk(
   }
 );
 
+export const postService = createAsyncThunk(
+  'app/post-service',
+  async (payload) => {
+    // const response = await axios({
+    //   method: 'post',
+    //   url: POST_PROPERTY,
+    //   data: JSON.stringify({...payload.property}),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+
+    const response = await axios
+  .post(POST_SERVICE,  {
+    ...payload.service},
+    {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      }
+    })
+
+  return response.data;
+}
+);
+
 export const postProperty = createAsyncThunk(
   'app/post-property',
   async (payload) => {
@@ -91,6 +117,7 @@ export const postProperty = createAsyncThunk(
     // })
 
     const response = await axios
+      
       .post(POST_PROPERTY,  {
         ...payload.property
       },
