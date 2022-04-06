@@ -1,6 +1,8 @@
 package com.group24.easyHomes.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.group24.easyHomes.model.PropertyListQuery;
+import com.group24.easyHomes.model.ServicesListQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +19,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Random;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -93,4 +98,31 @@ public class ServiceControllerIntegrationTest {
         mockMvc.perform(request).andExpect(status().isBadRequest());
 
     }
+
+    @Test
+    @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
+    public void filterServices_SUCCESS_withRequestBody() throws Exception {
+        ServicesListQuery query = new ServicesListQuery();
+        query.setService_name("Tiffin");
+        query.setPlan("monthly");
+        query.setCountry("Canada");
+        query.setCity("Halifax");
+        query.setService_type("Food Delivery");
+        query.setProvince("NS");
+        query.setCost(199);
+
+        MockHttpServletRequestBuilder request  = post("/service/services/filter");
+        request = request.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(query));
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "dv", password = "pwd", authorities = "USER")
+    public void filterServices_ERROR_withRequestBody() throws Exception {
+
+        MockHttpServletRequestBuilder request  = post("/service/services/filter");
+        request = request.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(null));
+        mockMvc.perform(request).andExpect(status().isBadRequest());
+    }
+
 }

@@ -220,6 +220,25 @@ export default function Filter({ setChecked, checked }) {
 
   };
 
+  const resetFilters = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (currentTab === 0) {
+      setFilterParams({
+        ...initialFiltersState
+      });
+      dispatch(filterProperties({
+        filterParams: {}
+      }));
+    } else {
+      setServicesFilterParams({
+        ...servicesInitialFiltersState
+      });
+      dispatch(filterServices({filterParams: {}}));
+    }
+  }
+
   const handleArrowButtonClick = () => {
     console.log('handleArrowButtonClick');
     setChecked(!checked);
@@ -408,7 +427,19 @@ export default function Filter({ setChecked, checked }) {
         })
 
       }
-      <Button disabled={disableSearchButton()} variant="contained" onClick={(e) => { handleSearch(e) }}>Search</Button>
+      <div style={
+        {
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginTop: '10px',
+          width: '70%'
+        }
+      }>
+        <Button disabled={disableSearchButton()} variant="contained" onClick={(e) => { handleSearch(e) }}>Search</Button>
+        <Button variant="contained" onClick={(e) => { resetFilters(e) }}>Reset</Button>
+      </div>
+
     </Box>
   };
   return (
@@ -428,7 +459,7 @@ export default function Filter({ setChecked, checked }) {
               {[24].map((elevation) => (
                 <Item key={elevation} elevation={elevation}>
                   
-                  <Box sx={{ p: 2 }}>
+                  <Box sx={{ p: 2, height: '100%', overflow: 'auto' }}>
                     <Box sx={{
                       display: 'flex',
                       flexDirection: 'row',
