@@ -9,7 +9,7 @@ build:
   image: maven:latest
   script:
     - echo "Building the pipeline"
-    - mvn clean package -DskipTests
+    - mvn clean package -X
   artifacts:
     paths:
       - target
@@ -27,7 +27,7 @@ test:
 
   script:
     - echo "Pipeline test started"
-    - mvn clean package -DskipTests
+    - mvn verify -X
   tags:
     - ugrad
 
