@@ -95,6 +95,8 @@ const Service = (props) => {
         </Snackbar>
         <h3 style={{ fontWeight: "bold" }}>Reviews</h3>
         {service?.reviews.map((review, index) => {
+            const date = review?.posted_on
+            const postedDate = date ? date.split('T')[0] : ''
             return (
               <div><Container style={
                 {
@@ -108,7 +110,7 @@ const Service = (props) => {
                   <Rating readOnly name="simple-controlled" value={review.review_rating} />
                 </div>
                 <p style={{ padding:0, margin:0}}>{review.review_description}</p>
-                <small style={{ padding:0, margin:0}}>Posted on:{review.posted_on}</small>
+                <small style={{ padding:0, margin:0}}>Posted on: {postedDate}</small>
                 <hr></hr>
                 </Container>
               </div>
