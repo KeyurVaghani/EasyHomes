@@ -46,7 +46,7 @@ deploy_develop:
     - echo "backend application has been built"
   only:
     refs:
-      - master
+      - main
 
 #deploy_develop:
 #  stage: deploy
